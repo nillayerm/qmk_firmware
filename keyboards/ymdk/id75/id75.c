@@ -22,8 +22,14 @@ bool rgb_matrix_indicators_kb(void) {
         return false;
     }
 
-    if (host_keyboard_led_state().caps_lock) { // Capslock = RED
-        rgb_matrix_set_color(44, 200, 0, 0);
+    if (host_keyboard_led_state().caps_lock) { // Orange light for Capslock
+        rgb_matrix_set_color(0, 200, 80, 0); // per-key tied with underglow from here
+        rgb_matrix_set_color(1, 200, 80, 0); 
+        rgb_matrix_set_color(2, 200, 80, 0); 
+        rgb_matrix_set_color(3, 200, 80, 0); 
+        rgb_matrix_set_color(4, 200, 80, 0); 
+        rgb_matrix_set_color(5, 200, 80, 0); 
+        rgb_matrix_set_color(6, 200, 80, 0); 
     }
     return true;
 }

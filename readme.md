@@ -16,6 +16,35 @@ The docs are powered by [VitePress](https://vitepress.dev/). They are also viewa
 
 You can request changes by making a fork and opening a [pull request](https://github.com/qmk/qmk_firmware/pulls).
 
+
+## Modified Keyboards On This Fork
+
+* [Winry 25tc](/keyboards/winry/winry25tc/
+```
+   make winry/winry25tc:nillayerm
+```
+
+* [MF17](keyboards/magic_force/mf17/)
+```
+   make magic_force/mf17:nillayerm
+```
+
+* [ID75](keyboards/ymdk/id75/)
+```
+   make ymdk/id75/f103:nillayerm
+```
+
+* [M2](keyboards/monsgeek/m2/)
+```
+   make monsgeek/m2:nillayerm
+```
+
+* [K320](/keyboards/durgod/k320/)
+```
+   make durgod/k320:nillayerm
+```
+
+
 ## Supported Keyboards
 
 * [Planck](/keyboards/planck/)

@@ -153,7 +153,8 @@
     "usb": {
         "device_version": "0.0.1",
         "pid": "0x0075",
-        "vid": "0x594D"
+        "vid": "0x594D",
+        "force_nkro": true
     },
     "community_layouts": ["ortho_5x15"],
     "layouts": {
