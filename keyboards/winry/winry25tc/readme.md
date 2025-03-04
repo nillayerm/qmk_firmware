@@ -2,13 +2,30 @@
 
 Keyboard from
 * [SpiderIsland on AliExpress(reseller)](https://a.aliexpress.com/_dVJsSpR). Seller provides [kbfirmware](https://kbfirmware.com/) JSON config that was converted to QMK.
-
-
-
 * Keyboard Maintainer: [andrzejressel](https://github.com/andrzejressel)
 * Hardware Availability: 
 https://aliexpress.com/item/1005001523579896.html
 https://item.taobao.com/item.htm?id=599731303104
+
+# Led
+* Led top side (top view)
+```
+20 21 22 23 24
+19  6  7  8  9
+18  5  0  1 10
+17  4  3  2 11
+16 15 14 13 12
+```
+
+* Led down side (top view)
+```
+   32  25
+31        26  
+30        27
+   29  28
+```
+Other related info can be found here: [pnetmon](https://github.com/pnetmon/winry25tf)
+
 
 Make example for this keyboard (after setting up your build environment):
 
