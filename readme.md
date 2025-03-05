@@ -41,7 +41,7 @@ You can request changes by making a fork and opening a [pull request](https://gi
 
 * [K320](/keyboards/durgod/k320/)
 ```
-   make durgod/k320:nillayerm
+   make durgod/k320/base:nillayerm
 ```
 
 
