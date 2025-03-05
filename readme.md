@@ -19,27 +19,27 @@ You can request changes by making a fork and opening a [pull request](https://gi
 
 ## Modified Keyboards On This Fork
 
-* [Winry 25tc](/keyboards/winry/winry25tc/)
+* [Winry 25tc](/keyboards/winry/winry25tc/) rocking [atmega32u4](https://www.etechnophiles.com/atmega32u4-pinout/) with 32 Kbytes of Flash memory, 48 MHz CPU, 2.5 KB of SRAM
 ```
    make winry/winry25tc:nillayerm
 ```
 
-* [MF17](keyboards/magic_force/mf17/)
+* [MF17](keyboards/magic_force/mf17/) rocking [STM32F072x8](https://www.st.com/content/st_com/en/search.html#q=STM32F072-t=products-page=1) with 64 Kbytes of Flash memory, 48 MHz CPU, 16 KB of SRAM
 ```
    make magic_force/mf17:nillayerm
 ```
 
-* [ID75](keyboards/ymdk/id75/)
+* [ID75](keyboards/ymdk/id75/) rocking [STM32F103xB](https://www.st.com/content/st_com/en/search.html#q=STM32F103-t=products-page=1) with 128 Kbytes of Flash memory, 72 MHz CPU, 20 KB of SRAM
 ```
    make ymdk/id75/f103:nillayerm
 ```
 
-* [M2](keyboards/monsgeek/m2/)
+* [M2](keyboards/monsgeek/m2/) rocking [WB32FQ95](https://www.westberrytech.com/uploads/file/WB32FQ95xx/EN_DS1905020_WB32FQ95xC_V01.pdf) with 256 Kbytes of Flash memory, 96 MHz CPU, 36 KB of SRAM
 ```
    make monsgeek/m2:nillayerm
 ```
 
-* [K320](/keyboards/durgod/k320/)
+* [K320](/keyboards/durgod/k320/) rocking [STM32F070RBT6](https://www.st.com/en/microcontrollers-microprocessors/stm32f070rb.html) with 128 Kbytes of Flash memory, 48 MHz CPU, 16 KB of SRAM
 ```
    make durgod/k320/base:nillayerm
 ```
