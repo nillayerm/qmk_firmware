@@ -19,7 +19,7 @@ You can request changes by making a fork and opening a [pull request](https://gi
 
 ## Modified Keyboards On This Fork
 
-* [Winry 25tc](/keyboards/winry/winry25tc/
+* [Winry 25tc](/keyboards/winry/winry25tc/)
 ```
    make winry/winry25tc:nillayerm
 ```

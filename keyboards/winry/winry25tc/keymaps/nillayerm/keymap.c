@@ -44,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_HOME,  KC_7,      KC_8,      KC_9,     KC_PPLS,
         KC_END,  KC_4,      KC_5,      KC_6,     KC_MPRV,
         KC_PGUP,  KC_1,      KC_2,      KC_3,     KC_MNXT,
-        KC_PGDN,   MO(FUNC),  KC_0,      KC_DOT,   KC_MPLY
+        LT(1, KC_SPC),   MO(FUNC),  KC_0,      KC_DOT,   KC_MPLY
     ),
 
     /* Keymap FUNC: Function Layer
