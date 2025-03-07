@@ -10,6 +10,25 @@ A 75-key, 5-row ortholinear keyboard with per-key and underglow RGB LEDs.
   * `f103`: (Geehy APM32F103CBT6, uf2boot)
 * Hardware Availability: [YMDK](https://ymdkey.com/products/id75-75-keys-ortholinear-layout-qmk-anodized-aluminum-case-plate-hot-swappable-hot-swap-type-c-pcb-mechanical-keyboard-kit), [AliExpress (YMDK Store)](https://www.aliexpress.com/item/2255800125183974.html), [Amazon](https://www.amazon.com/Ortholinear-Anodized-Aluminum-hot-swappable-Mechanical/dp/B07ZQ8CD88)
 
+# Led
+* Led top side (top view)
+```
+74 73 72 71 70 69 68 67 66 65 64 63 62 61 60
+59 58 57 56 55 54 53 52 51 50 49 48 47 46 45
+44 43 42 41 40 39 38 37 36 35 34 33 32 31 30
+29 28 27 26 25 24 23 22 21 20 19 18 17 16 15
+14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+```
+
+* Led down side (top view)
+```
+                                            
+    7     8     9    10    11    12    13 
+                                            
+    6     5     4     3     2     1     0 
+                                            
+```
+
 Make example for this keyboard (after setting up your build environment):
 
     make ymdk/id75/f103:default
