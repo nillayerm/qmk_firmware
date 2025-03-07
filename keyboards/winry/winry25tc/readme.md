@@ -2,7 +2,6 @@
 
 Keyboard from
 * [SpiderIsland on AliExpress(reseller)](https://a.aliexpress.com/_dVJsSpR). Seller provides [kbfirmware](https://kbfirmware.com/) JSON config that was converted to QMK.
-* Printing on the PCB alludes to how it would have been called originally, 'DEBROGLIE Lightning-25'. Now it's categorized under 'Winry' family nonetheless.
 * Keyboard Maintainer: [andrzejressel](https://github.com/andrzejressel)
 * Hardware Availability: 
 https://aliexpress.com/item/1005001523579896.html
@@ -33,4 +32,6 @@ See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_to
 30        27
    29  28
 ```
+
+Printing on the PCB alludes to how it would have been called originally, 'DEBROGLIE Lightning-25'. Now it's categorized under 'Winry' family nonetheless.
 [pnetmon](https://github.com/pnetmon/winry25tf) has studied this keyboard extensively and shared the detailed information.
