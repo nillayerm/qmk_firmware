@@ -16,8 +16,8 @@ Make example for this keyboard (after setting up your build environment):
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
 
-# Led
-* Led top side (top view)
+## LED
+* LED top side (top view)
 ```
 20 21 22 23 24
 19  6  7  8  9
@@ -26,7 +26,7 @@ See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_to
 16 15 14 13 12
 ```
 
-* Led down side (top view)
+* LED down side (top view)
 ```
    32  25
 31        26  

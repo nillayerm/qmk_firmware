@@ -31,8 +31,8 @@ Enter the bootloader in 3 ways:
 After entering the bootloader through one of the three methods above, the keyboard will appear as a USB mass storage device. If the CLI is unable to find this device, the compiled `.uf2` file can be manually copied to it. The keyboard will reboot on completion with the new firmware loaded.
 - `f103`: The volume name is `MT.KEY`.
 
-# Led
-* Led top side (top view)
+## LED
+* LED top side (top view)
 ```
         ││
        ┌┘└┐
@@ -49,7 +49,7 @@ After entering the bootloader through one of the three methods above, the keyboa
    └────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
 ```
 
-* Led down side (top view)
+* LED down side (top view)
 ```
         ││
        ┌┘└┐
