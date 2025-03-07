@@ -19,17 +19,17 @@ You can request changes by making a fork and opening a [pull request](https://gi
 
 ## Modified Keyboards On This Fork
 
-* [Winry 25tc](/keyboards/winry/winry25tc/) rocking [atmega32u4](https://www.etechnophiles.com/atmega32u4-pinout/) with 32 Kbytes of Flash memory, 48 MHz CPU, 2.5 KB of SRAM
-```
-   make winry/winry25tc:nillayerm
-```
-
 * [MF17](keyboards/magic_force/mf17/) rocking [STM32F072x8](https://www.st.com/content/st_com/en/search.html#q=STM32F072-t=products-page=1) with 64 Kbytes of Flash memory, 48 MHz CPU, 16 KB of SRAM
 ```
    make magic_force/mf17:nillayerm
 ```
 
-* [ID75](keyboards/ymdk/id75/) rocking [STM32F103xB](https://www.st.com/content/st_com/en/search.html#q=STM32F103-t=products-page=1) with 128 Kbytes of Flash memory, 72 MHz CPU, 20 KB of SRAM
+* [Winry 25tc](/keyboards/winry/winry25tc/) rocking [atmega32u4](https://www.etechnophiles.com/atmega32u4-pinout/) with 32 Kbytes of Flash memory, 48 MHz CPU, 2.5 KB of SRAM
+```
+   make winry/winry25tc:nillayerm
+```
+
+* [ID75](keyboards/ymdk/id75/) rocking [APM32F103CBT6](https://global.geehy.com/product/fifth/APM32F103) with 128 Kbytes of Flash memory, 96 MHz CPU, 36 KB of SRAM
 ```
    make ymdk/id75/f103:nillayerm
 ```
