@@ -8,6 +8,14 @@ Keyboard from
 https://aliexpress.com/item/1005001523579896.html
 https://item.taobao.com/item.htm?id=599731303104
 
+Make example for this keyboard (after setting up your build environment):
+
+    make winry/winry25tc:default
+
+**Reset Key**: Located on the other side of the keyboard.
+
+See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
+
 # Led
 * Led top side (top view)
 ```
@@ -26,11 +34,3 @@ https://item.taobao.com/item.htm?id=599731303104
    29  28
 ```
 [pnetmon](https://github.com/pnetmon/winry25tf) has studied this keyboard extensively and shared the detailed information.
-
-Make example for this keyboard (after setting up your build environment):
-
-    make winry/winry25tc:default
-
-**Reset Key**: Located on the other side of the keyboard.
-
-See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
