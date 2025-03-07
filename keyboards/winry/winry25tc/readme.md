@@ -56,4 +56,5 @@ See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_to
 ```
 
 Printing on the PCB alludes to how it would have been called originally, 'DEBROGLIE Lightning-25'. Now it's categorized under 'Winry' family nonetheless.
+
 [pnetmon](https://github.com/pnetmon/winry25tf) has studied this keyboard extensively and shared the detailed information.
