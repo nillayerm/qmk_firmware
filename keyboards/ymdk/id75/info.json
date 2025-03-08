@@ -9,6 +9,9 @@
         "nkro": true,
         "rgb_matrix": true
     },
+    "dynamic_keymap": {
+    "layer_count": 5
+},
     "rgb_matrix": {
         "animations": {
             "alphas_mods": true,

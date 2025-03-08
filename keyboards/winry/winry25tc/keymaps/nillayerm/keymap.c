@@ -17,72 +17,35 @@
 #include QMK_KEYBOARD_H
 
 enum my_layers {
-    BASE,
-    FUNC,
-    CL_FD,
-    SYST,
-    MOBI
+    _BASE,
+    _FUNC,
+    _GAME,
+    _SYST,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-    /* Keymap BASE: Default Layer for Numpad and more
-    * ,----------------------------------.
-    * |  Esc |   /  |   *  |   -  | Bksp |
-    * |------+------+------+------+------|
-    * | HOME |   7  |   8  |   9  |   +  |
-    * |------+------+------+------+------|
-    * |  END |   4  |   5  |   6  | Prvs |
-    * |------+------+------+------+------|
-    * | PGUP |   1  |   2  |   3  | Next |
-    * |------+------+------+------+------|
-    * | PGDN | MO(1)|   0  |   .  | Play |
-    * `----------------------------------'
-    */
-    [BASE] = LAYOUT(
-        KC_ESC,   KC_PSLS,   KC_PAST,   KC_PMNS,  KC_BSPC,
-        KC_HOME,  KC_7,      KC_8,      KC_9,     KC_PPLS,
-        KC_END,  KC_4,      KC_5,      KC_6,     KC_MPRV,
-        KC_PGUP,  KC_1,      KC_2,      KC_3,     KC_MNXT,
-        LT(1, KC_SPC),   MO(FUNC),  KC_0,      KC_DOT,   KC_MPLY
+    /* Default Layer */
+    [_BASE] = LAYOUT(
+        KC_6,           KC_7,           KC_8,      KC_9,     KC_0,
+        KC_Y,           KC_U,           KC_I,      KC_O,     KC_P,
+        KC_H,           KC_J,           KC_K,      KC_L,     RSFT_T(KC_BSPC),
+        KC_N,           KC_M,           KC_COMM,   KC_DOT,   KC_SLSH,
+        KC_SPC,         LT(1, KC_QUOT), KC_SCLN,   KC_LBRC,  KC_RBRC
     ),
 
-    /* Keymap FUNC: Function Layer
-    * ,----------------------------------.
-    * |      |      | Mute |      | TG(3)|
-    * |------+------+------+------+------|
-    * |      |      | Vol+ |      |      |
-    * |------+------+------+------+------|
-    * |      | Prvs | Vol- | Next |      |
-    * |------+------+------+------+------|
-    * |      |KeyLoc| Play |      |      |
-    * |------+------+------+------+------|
-    * |      | TRNS | MO(2)| TG(4)|      |
-    * `----------------------------------'
-    */
-    [FUNC] = LAYOUT(
-        _______,   _______,   KC_MUTE,   _______,   TG(CL_FD),
-        _______,   _______,   KC_VOLU,   _______,   _______,
-        _______,   KC_MPRV,   KC_VOLD,   KC_MNXT,   _______,
-        _______,   QK_LOCK,   KC_MPLY,   _______,   _______,
-        _______,   KC_TRNS,   MO(SYST),  _______, _______
+    /* Function Layer */
+    [_FUNC] = LAYOUT(
+        TG(2),     _______,   _______,   KC_MINS,   KC_EQL,
+        DT_PRNT,   _______,   KC_UP,     _______,   _______,
+        DT_UP,     KC_LEFT,   KC_DOWN,   KC_RGHT,   KC_ENT,
+        DT_DOWN,   QK_LOCK,   _______,   _______,   KC_RALT,
+        _______,   KC_TRNS,   MO(3),     _______,   _______
     ),
 
-    /* Keymap CL_FD: Custom Layer dedicated to 'The First Descendant'
-    * ,----------------------------------.
-    * |  Esc |   G  |   M  |   J  | TRNS |
-    * |------+------+------+------+------|
-    * |   I  |   Q  |   W  |   E  |   R  |
-    * |------+------+------+------+------|
-    * | LCtl |   A  |   S  |   D  |   F  |
-    * |------+------+------+------+------|
-    * |  F2  |   Z  |   X  |   C  |   V  |
-    * |------+------+------+------+------|
-    * |  Win | TRNS | Bksp | LShft|  Spc |
-    * `----------------------------------'
-    */
-    [CL_FD] = LAYOUT(
-        _______,    KC_G,       KC_M,       KC_J,     KC_TRNS,
+    /* Customized Game Layer */
+    [_GAME] = LAYOUT(
+        KC_TRNS,    KC_G,       KC_M,       KC_J,     KC_ESC,
         KC_I,       KC_Q,       KC_W,       KC_E,     KC_R,
         KC_LCTL,    KC_A,       KC_S,       KC_D,     KC_F,
         KC_F2,      KC_Z,       KC_X,       KC_C,     KC_V,
@@ -90,20 +53,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
 
-    /* Keymap SYST: System Layer
-    * ,----------------------------------.
-    * |   ×  |   ×  | NKRO |   ×  |   ×  |
-    * |------+------+------+------+------|
-    * |   ×  |   ×  |   ×  |   ×  |   ×  |
-    * |------+------+------+------+------|
-    * |ClrROM|   ×  | BtLdr|   ×  |   ×  |
-    * |------+------+------+------+------|
-    * |   ×  |   ×  |   ×  |   ×  |   ×  |
-    * |------+------+------+------+------|
-    * |   ×  | TRNS | TRNS |   ×  | Sleep|
-    * `----------------------------------'
-    */
-    [SYST] = LAYOUT(
+    /* System Layer */
+    [_SYST] = LAYOUT(
         XXXXXXX,   XXXXXXX,   NK_TOGG,   XXXXXXX,   XXXXXXX,
         XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,
         EE_CLR,    XXXXXXX,   QK_BOOT,   XXXXXXX,   XXXXXXX,
@@ -111,3 +62,48 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX,   KC_TRNS,   KC_TRNS,   XXXXXXX,   KC_SLEP
     )
 };
+
+#define RGBLIGHT_LAYERS
+
+const rgblight_segment_t PROGMEM my_layer_caps[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 1, 88, 230, 255},
+    {1, 1, 88, 230, 255},
+    {4, 1, 88, 230, 255},
+    {5, 1, 88, 230, 255},
+    {6, 1, 88, 230, 255},
+    {7, 1, 88, 230, 255},
+    {8, 1, 88, 230, 255},
+    {9, 1, 88, 230, 255},
+    {17, 1, 88, 230, 255},
+    {18, 1, 88, 230, 255},
+    {19, 1, 88, 230, 255}
+);
+
+enum rgb_layer_index {
+    L_CAPSLOCK
+};
+
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    [L_CAPSLOCK]=my_layer_caps
+);
+
+void keyboard_post_init_user(void) {
+    // Enable the LED layers
+    rgblight_layers = my_rgb_layers;
+}
+
+// This _function is called when Caps lock state is changed/toggled/updated
+bool led_update_user(led_t led_state) {
+    rgblight_set_layer_state(L_CAPSLOCK, led_state.caps_lock);
+    return true;
+}
+
+// tapping term adjustment here
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case RSFT_T(KC_BSPC):
+            return 105;
+        default:
+            return TAPPING_TERM;
+    }
+}

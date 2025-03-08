@@ -22,14 +22,29 @@ bool rgb_matrix_indicators_kb(void) {
         return false;
     }
 
-    if (host_keyboard_led_state().caps_lock) { // Orange light for Capslock
-        rgb_matrix_set_color(0, 200, 80, 0); // per-key tied with underglow from here
-        rgb_matrix_set_color(1, 200, 80, 0); 
-        rgb_matrix_set_color(2, 200, 80, 0); 
-        rgb_matrix_set_color(3, 200, 80, 0); 
-        rgb_matrix_set_color(4, 200, 80, 0); 
-        rgb_matrix_set_color(5, 200, 80, 0); 
-        rgb_matrix_set_color(6, 200, 80, 0); 
+    if (host_keyboard_led_state().caps_lock) { // dedicated per-key light zone for Capslock
+        rgb_matrix_set_color(21, 6, 255, 65);
+        rgb_matrix_set_color(22, 6, 255, 65); 
+        rgb_matrix_set_color(23, 6, 255, 65); 
+        rgb_matrix_set_color(24, 6, 255, 65); 
+        rgb_matrix_set_color(25, 6, 255, 65); 
+
+        rgb_matrix_set_color(36, 6, 255, 65); 
+        rgb_matrix_set_color(37, 6, 255, 65); 
+        rgb_matrix_set_color(38, 6, 255, 65); 
+        rgb_matrix_set_color(39, 6, 255, 65); 
+        rgb_matrix_set_color(40, 6, 255, 65);
+
+        rgb_matrix_set_color(51, 6, 255, 65); 
+        rgb_matrix_set_color(52, 6, 255, 65); 
+        rgb_matrix_set_color(53, 6, 255, 65); 
+        rgb_matrix_set_color(54, 6, 255, 65); 
+        rgb_matrix_set_color(55, 6, 255, 65);
+
+        rgb_matrix_set_color(26, RGB_OFF);
+    }
+    else{
+        rgb_matrix_set_color(26, 6, 255, 65);
     }
     return true;
 }

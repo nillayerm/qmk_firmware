@@ -16,62 +16,127 @@
 
 #include QMK_KEYBOARD_H
 
+typedef struct {
+    uint16_t tap;
+    uint16_t hold;
+    uint16_t held;
+} tap_dance_tap_hold_t;
+
+enum {
+    DM_MUPL,
+    DM_VDPR,
+    DM_VUNX,
+};
+
+void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (state->pressed) {
+        if (state->count == 1
+#ifndef PERMISSIVE_HOLD
+            && !state->interrupted
+#endif
+        ) {
+            register_code16(tap_hold->hold);
+            tap_hold->held = tap_hold->hold;
+        } else {
+            register_code16(tap_hold->tap);
+            tap_hold->held = tap_hold->tap;
+        }
+    }
+}
+
+void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (tap_hold->held) {
+        unregister_code16(tap_hold->held);
+        tap_hold->held = 0;
+    }
+}
+
+#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
+    { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
+
+tap_dance_action_t tap_dance_actions[] = {
+    [DM_MUPL] = ACTION_TAP_DANCE_TAP_HOLD(KC_MUTE, KC_MPLY),
+    [DM_VDPR] = ACTION_TAP_DANCE_TAP_HOLD(KC_VOLD, KC_MPRV),
+    [DM_VUNX] = ACTION_TAP_DANCE_TAP_HOLD(KC_VOLU, KC_MNXT),
+};
+
+
+
 enum layer_names {
     _BASE,
-    _FUNC,
+    _FN1,
+    _FN2,
     _SYST,
-    _LOCK
+    _LOCK,
 };
 
 enum custom_macros {
     MACRO_1 = SAFE_RANGE,
-    MACRO_2
+    MACRO_2,
+    MACRO_3,
+    MACRO_4,
+    MACRO_5,
+    MACRO_6,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-    /* Keymap _BASE: Base Layer (Default Layer) */
+    /* Base Layer (Default Layer) */
     [_BASE] = LAYOUT_ortho_5x15(
-        KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_HOME,  KC_END,   KC_6,             KC_7,    KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,
-        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_PGUP,  KC_PGDN,  KC_Y,             KC_U,    KC_I,     KC_O,     KC_P,     KC_BSPC,  KC_BSLS,
-        KC_LSFT, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_F5,    KC_PSCR,  KC_H,             KC_J,    KC_K,     KC_L,     KC_RSFT,  KC_QUOT,  KC_ENT,
-        KC_CAPS, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,  KC_B,     KC_N,             KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_UP,    KC_RBRC,
-        KC_LCTL, KC_LGUI, KC_LALT, KC_GRV,  KC_SPC,  MO(1),   KC_VOLD,  KC_VOLU,  LT(1, KC_RALT),   KC_SPC,  KC_SCLN,  KC_LBRC,  KC_LEFT,  KC_DOWN,  KC_RGHT
+        KC_INS,  KC_PSCR,  KC_DEL,   QK_GESC,       KC_1,     KC_2,    KC_3,     KC_4,               KC_5,              KC_HOME,           KC_SLSH,  KC_ASTR,  TD(DM_MUPL), TD(DM_VDPR), TD(DM_VUNX),
+        KC_F1,   KC_F5,    KC_F9,    KC_TAB,        KC_Q,     KC_W,    KC_E,     KC_R,               KC_T,              KC_PGUP,           KC_7,     KC_8,     KC_9,       KC_MINS,  KC_BSPC,
+        KC_F2,   KC_F6,    KC_F10,   KC_LSFT,       KC_A,     KC_S,    KC_D,     KC_F,               KC_G,              KC_PGDN,           KC_4,     KC_5,     KC_6,       KC_PLUS,  KC_ENT,
+        KC_F3,   KC_F7,    KC_F11,   KC_CAPS,       KC_Z,     KC_X,    KC_C,     KC_V,               KC_B,              KC_END,            KC_1,     KC_2,     KC_3,       KC_UP,    KC_BSLS,
+        KC_F4,   KC_F8,    KC_F12,   KC_LCTL,       KC_LGUI,  KC_LALT, KC_RALT,  KC_SPC,             LT(_FN1, KC_BSPC), LT(_FN2, KC_ENT),  KC_0,     KC_DOT,   KC_LEFT,    KC_DOWN,  KC_RGHT
     ),
  
-    /* Keymap _FUNC: Function Layer */
-    [_FUNC] = LAYOUT_ortho_5x15(
-        TG(3),   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______, _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,  KC_F12,
-        _______, _______, MACRO_1, KC_UP,   _______, _______, _______, _______, _______, _______, _______, _______, RGB_TOG,  KC_DEL,  KC_INS,
-        _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, MO(2),   _______, _______, _______, _______, _______, _______, _______,  _______, _______,
-        _______, _______, _______, _______, MACRO_2, QK_LOCK, KC_MPLY, _______, _______, _______, _______, _______, _______,  RGB_VAI, _______,
-        _______, _______, _______, _______, _______, KC_TRNS, KC_MPRV, KC_MNXT, _______, _______, _______, _______, RGB_RMOD, RGB_VAD, RGB_MOD
+    /* FN1 Layer */
+    [_FN1] = LAYOUT_ortho_5x15(
+        _______, _______, _______, TG(_LOCK), _______, _______, _______, _______,   _______,   _______, _______, _______, _______,  _______, _______,
+        _______, _______, _______, _______,   _______, MACRO_1, _______, _______,   _______,   _______, _______, _______, _______,  _______, RGB_TOG,
+        _______, _______, _______, _______,   _______, _______, _______, _______,   MO(_SYST), _______, _______, _______, _______,  _______, _______,
+        _______, _______, _______, _______,   _______, _______, _______, _______,   QK_LOCK,   _______, _______, _______, _______,  RGB_VAI, _______,
+        _______, _______, _______, _______,   _______, _______, _______, _______,   KC_TRNS,   _______, _______, _______, RGB_RMOD, RGB_VAD, RGB_MOD
+    ), 
+
+    /* FN2 Layer */
+    [_FN2] = LAYOUT_ortho_5x15(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______,
+        _______, _______, _______, _______, _______, _______, MACRO_4, MACRO_3, MACRO_2, _______, _______, _______, _______,  _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, MACRO_6, MACRO_5, _______, _______, _______, _______,  _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_TRNS, _______, _______, _______,  _______, _______
     ),
 
-    /* Keymap _SYST: System Layer */
+    /* System Layer */
     [_SYST] = LAYOUT_ortho_5x15(
         EE_CLR,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_TRNS, XXXXXXX, KC_SLEP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, NK_TOGG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_TRNS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+        QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_SLEP, XXXXXXX, XXXXXXX, KC_TRNS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        NK_TOGG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_TRNS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 
-    /* Keymap _LOCK: All Key Disabled Layer */
+    /* All Key Lock Layer */
     [_LOCK] = LAYOUT_ortho_5x15(
-        KC_TRNS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, KC_TRNS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_TRNS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_TRNS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     )
 };
 
+// custom per-key LED setting for All Key Lock Layer
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     for (uint8_t i = led_min; i < 15; i++) {
         switch(get_highest_layer(layer_state|default_layer_state)) {
-            case 3:
-                rgb_matrix_set_color(i, RGB_RED);
+            case _LOCK:
+                rgb_matrix_set_color(i, 255, 30, 0);
                 break;
             default:
                 break;
@@ -80,35 +145,107 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     return false;
 }
 
-//Custom macros
+// turn LED off when toggled back & Custom macros
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    tap_dance_action_t *action;
+
     switch (keycode) {
-        case TG(3):
-            if (!record->event.pressed) { // When release after keypress
+        case TD(DM_MUPL):  // list all tap dance keycodes with tap-hold configurations
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+                tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+                tap_code16(tap_hold->tap);
+            }
+            case TD(DM_VDPR):  // list all tap dance keycodes with tap-hold configurations
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+                tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+                tap_code16(tap_hold->tap);
+            }
+            case TD(DM_VUNX):  // list all tap dance keycodes with tap-hold configurations
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+                tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+                tap_code16(tap_hold->tap);
+            }
+
+
+
+        case TG(_LOCK):
+            if (!record->event.pressed) { // When released after keypress
                 for (uint8_t i = 0; i < 15; i++) {
                     rgb_matrix_set_color(i, RGB_OFF);
                 }
             }
             break;
         case KC_CAPS:
-            if (!record->event.pressed) { // When release after keypress
-                for (uint8_t i = 0; i < 7; i++) {
-                    rgb_matrix_set_color(i, RGB_OFF);
-                }
+            if (!record->event.pressed) {
+                rgb_matrix_set_color(21, RGB_OFF);
+                rgb_matrix_set_color(22, RGB_OFF); 
+                rgb_matrix_set_color(23, RGB_OFF); 
+                rgb_matrix_set_color(24, RGB_OFF); 
+                rgb_matrix_set_color(25, RGB_OFF); 
+        
+                rgb_matrix_set_color(36, RGB_OFF); 
+                rgb_matrix_set_color(37, RGB_OFF); 
+                rgb_matrix_set_color(38, RGB_OFF); 
+                rgb_matrix_set_color(39, RGB_OFF); 
+                rgb_matrix_set_color(40, RGB_OFF);
+        
+                rgb_matrix_set_color(51, RGB_OFF); 
+                rgb_matrix_set_color(52, RGB_OFF); 
+                rgb_matrix_set_color(53, RGB_OFF); 
+                rgb_matrix_set_color(54, RGB_OFF); 
+                rgb_matrix_set_color(55, RGB_OFF);
             }
             break;
-        case MACRO_1:
+        case MACRO_1: //달려
             if (record->event.pressed) {
                     SEND_STRING(
                         SS_DOWN(X_W)
                         );
             }
             break;
-        case MACRO_2:
+        case MACRO_2: //탭 닫기
             if (record->event.pressed) {
                     SEND_STRING(SS_LCTL("w"));
+            }
+            break;
+        case MACRO_3: //붙여넣기
+            if (record->event.pressed) {
+                    SEND_STRING(SS_LCTL("v"));
+            }
+            break;
+        case MACRO_4: //복사
+            if (record->event.pressed) {
+                    SEND_STRING(SS_LCTL("c"));
+            }
+            break;
+        case MACRO_5: //저장
+            if (record->event.pressed) {
+                    SEND_STRING(SS_LCTL("s"));
+            }
+            break;
+        case MACRO_6: //되돌리기
+            if (record->event.pressed) {
+                    SEND_STRING(SS_LCTL("z"));
             }
             break;
         }
     return true;
 }
+
+// tapping term adjustment here
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(_FN2, KC_ENT):
+            return 145;
+        case LT(_FN1, KC_BSPC):
+            return 155;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+
+
