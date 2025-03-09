@@ -59,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F3,   KC_F7,    KC_F11,   KC_CAPS,       KC_Z,     KC_X,    KC_C,     KC_V,               KC_B,              KC_END,            KC_1,     KC_2,     KC_3,       KC_UP,    KC_BSLS,
         KC_F4,   KC_F8,    KC_F12,   KC_LCTL,       KC_LGUI,  KC_LALT, KC_RALT,  KC_SPC,             LT(_FN1, KC_BSPC), LT(_FN2, KC_ENT),  KC_0,     KC_DOT,   KC_LEFT,    KC_DOWN,  KC_RGHT
     ),
- 
+
     /* FN1 Layer */
     [_FN1] = LAYOUT_ortho_5x15(
         _______, _______, _______, TG(_LOCK), _______, _______, _______, _______,   _______,   _______, _______, _______, _______,  _______, _______,
@@ -67,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______,   _______, _______, _______, _______,   MO(_SYST), _______, _______, _______, _______,  _______, _______,
         _______, _______, _______, _______,   _______, _______, _______, _______,   QK_LOCK,   _______, _______, _______, _______,  RGB_VAI, _______,
         _______, _______, _______, _______,   _______, _______, _______, _______,   KC_TRNS,   _______, _______, _______, RGB_RMOD, RGB_VAD, RGB_MOD
-    ), 
+    ),
 
     /* FN2 Layer */
     [_FN2] = LAYOUT_ortho_5x15(
@@ -129,7 +129,7 @@ void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
         }
     }
 }
- // when tap-hold for tap dance gets reset
+// when tap-hold for tap dance gets reset
 void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
     tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
 
@@ -138,7 +138,7 @@ void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
         tap_hold->held = 0;
     }
 }
- // Tap Dance tap-hold actions finalization
+// Tap Dance tap-hold actions finalization
 #define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
     { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
 
@@ -257,9 +257,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case TD(DM_MUPL):
             return 200;
         case TD(DM_VDPR):
-            return 285;
+            return 275;
         case TD(DM_VUNX):
-            return 285;
+            return 275;
         default:
             return TAPPING_TERM;
     }
