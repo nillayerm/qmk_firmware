@@ -16,56 +16,6 @@
 
 #include QMK_KEYBOARD_H
 
-typedef struct {
-    uint16_t tap;
-    uint16_t hold;
-    uint16_t held;
-} tap_dance_tap_hold_t;
-
-enum {
-    DM_MUPL,
-    DM_VDPR,
-    DM_VUNX,
-};
-
-void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
-    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
-
-    if (state->pressed) {
-        if (state->count == 1
-#ifndef PERMISSIVE_HOLD
-            && !state->interrupted
-#endif
-        ) {
-            register_code16(tap_hold->hold);
-            tap_hold->held = tap_hold->hold;
-        } else {
-            register_code16(tap_hold->tap);
-            tap_hold->held = tap_hold->tap;
-        }
-    }
-}
-
-void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
-    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
-
-    if (tap_hold->held) {
-        unregister_code16(tap_hold->held);
-        tap_hold->held = 0;
-    }
-}
-
-#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
-    { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
-
-tap_dance_action_t tap_dance_actions[] = {
-    [DM_MUPL] = ACTION_TAP_DANCE_TAP_HOLD(KC_MUTE, KC_MPLY),
-    [DM_VDPR] = ACTION_TAP_DANCE_TAP_HOLD(KC_VOLD, KC_MPRV),
-    [DM_VUNX] = ACTION_TAP_DANCE_TAP_HOLD(KC_VOLU, KC_MNXT),
-};
-
-
-
 enum layer_names {
     _BASE,
     _FN1,
@@ -74,6 +24,7 @@ enum layer_names {
     _LOCK,
 };
 
+ // customized macro keys
 enum custom_macros {
     MACRO_1 = SAFE_RANGE,
     MACRO_2,
@@ -82,6 +33,21 @@ enum custom_macros {
     MACRO_5,
     MACRO_6,
 };
+
+// Tap Dance keycodes
+enum td_keycodes {
+    DM_MUPL,
+    DM_VDPR,
+    DM_VUNX,
+};
+
+// various actions for Tap Dance
+typedef struct {
+    uint16_t tap;
+    uint16_t hold;
+    uint16_t held;
+} tap_dance_tap_hold_t;
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -145,93 +111,139 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     return false;
 }
 
-// turn LED off when toggled back & Custom macros
+// when tap-hold for tap dance gets finished
+void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (state->pressed) {
+        if (state->count == 1
+    #ifndef PERMISSIVE_HOLD
+            && !state->interrupted
+    #endif
+        ) {
+            register_code16(tap_hold->hold);
+            tap_hold->held = tap_hold->hold;
+        } else {
+            register_code16(tap_hold->tap);
+            tap_hold->held = tap_hold->tap;
+        }
+    }
+}
+ // when tap-hold for tap dance gets reset
+void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (tap_hold->held) {
+        unregister_code16(tap_hold->held);
+        tap_hold->held = 0;
+    }
+}
+ // Tap Dance tap-hold actions finalization
+#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
+    { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
+
+// Key assignment for Tap Dance keycodes
+tap_dance_action_t tap_dance_actions[] = {
+    [DM_MUPL] = ACTION_TAP_DANCE_TAP_HOLD(KC_MUTE, KC_MPLY),
+    [DM_VDPR] = ACTION_TAP_DANCE_TAP_HOLD(KC_VOLD, KC_MPRV),
+    [DM_VUNX] = ACTION_TAP_DANCE_TAP_HOLD(KC_VOLU, KC_MNXT),
+};
+
+/*
+ 1. special Tap Dance keys for tap-hold function
+ 2. turn LED off when toggled back
+ 3. customized macro keys
+*/
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     tap_dance_action_t *action;
 
     switch (keycode) {
-        case TD(DM_MUPL):  // list all tap dance keycodes with tap-hold configurations
+        // 1. Tap Dance for tap-hold
+        case TD(DM_MUPL):
             action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
             if (!record->event.pressed && action->state.count && !action->state.finished) {
-                tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-                tap_code16(tap_hold->tap);
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
             }
-            case TD(DM_VDPR):  // list all tap dance keycodes with tap-hold configurations
+            break;
+        case TD(DM_VDPR):
             action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
             if (!record->event.pressed && action->state.count && !action->state.finished) {
-                tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-                tap_code16(tap_hold->tap);
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
             }
-            case TD(DM_VUNX):  // list all tap dance keycodes with tap-hold configurations
+            break;
+        case TD(DM_VUNX):
             action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
             if (!record->event.pressed && action->state.count && !action->state.finished) {
-                tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-                tap_code16(tap_hold->tap);
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
             }
-
-
-
+            break;
+        // 2. LED off for light indication
         case TG(_LOCK):
             if (!record->event.pressed) { // When released after keypress
-                for (uint8_t i = 0; i < 15; i++) {
+                for (uint8_t i = 0; i < 15; i++) { // per-key LED for the first row with all of the underglow
                     rgb_matrix_set_color(i, RGB_OFF);
                 }
             }
             break;
         case KC_CAPS:
             if (!record->event.pressed) {
-                rgb_matrix_set_color(21, RGB_OFF);
-                rgb_matrix_set_color(22, RGB_OFF); 
-                rgb_matrix_set_color(23, RGB_OFF); 
-                rgb_matrix_set_color(24, RGB_OFF); 
-                rgb_matrix_set_color(25, RGB_OFF); 
-        
-                rgb_matrix_set_color(36, RGB_OFF); 
-                rgb_matrix_set_color(37, RGB_OFF); 
-                rgb_matrix_set_color(38, RGB_OFF); 
-                rgb_matrix_set_color(39, RGB_OFF); 
-                rgb_matrix_set_color(40, RGB_OFF);
-        
-                rgb_matrix_set_color(51, RGB_OFF); 
-                rgb_matrix_set_color(52, RGB_OFF); 
-                rgb_matrix_set_color(53, RGB_OFF); 
-                rgb_matrix_set_color(54, RGB_OFF); 
-                rgb_matrix_set_color(55, RGB_OFF);
+                // B to Z  per-key LED
+                rgb_matrix_set_color(21, RGB_OFF); // B
+                rgb_matrix_set_color(22, RGB_OFF); // V
+                rgb_matrix_set_color(23, RGB_OFF); // C
+                rgb_matrix_set_color(24, RGB_OFF); // X
+                rgb_matrix_set_color(25, RGB_OFF); // Z
+                // G to A  per-key LED
+                rgb_matrix_set_color(36, RGB_OFF); // G
+                rgb_matrix_set_color(37, RGB_OFF); // F
+                rgb_matrix_set_color(38, RGB_OFF); // D
+                rgb_matrix_set_color(39, RGB_OFF); // S
+                rgb_matrix_set_color(40, RGB_OFF); // A
+                // T to Q  per-key LED
+                rgb_matrix_set_color(51, RGB_OFF); // T
+                rgb_matrix_set_color(52, RGB_OFF); // R
+                rgb_matrix_set_color(53, RGB_OFF); // E
+                rgb_matrix_set_color(54, RGB_OFF); // W
+                rgb_matrix_set_color(55, RGB_OFF); // Q
             }
             break;
-        case MACRO_1: //달려
+        // 3. customized macros
+        case MACRO_1: // keep running
             if (record->event.pressed) {
-                    SEND_STRING(
-                        SS_DOWN(X_W)
-                        );
+                SEND_STRING(
+                    SS_DOWN(X_W)
+                );
             }
             break;
-        case MACRO_2: //탭 닫기
+        case MACRO_2: // close current tab
             if (record->event.pressed) {
-                    SEND_STRING(SS_LCTL("w"));
+                SEND_STRING(SS_LCTL("w"));
             }
             break;
-        case MACRO_3: //붙여넣기
+        case MACRO_3: // paste
             if (record->event.pressed) {
-                    SEND_STRING(SS_LCTL("v"));
+                SEND_STRING(SS_LCTL("v"));
             }
             break;
-        case MACRO_4: //복사
+        case MACRO_4: // copy
             if (record->event.pressed) {
-                    SEND_STRING(SS_LCTL("c"));
+                SEND_STRING(SS_LCTL("c"));
             }
             break;
-        case MACRO_5: //저장
+        case MACRO_5: // save
             if (record->event.pressed) {
-                    SEND_STRING(SS_LCTL("s"));
+                SEND_STRING(SS_LCTL("s"));
             }
             break;
-        case MACRO_6: //되돌리기
+        case MACRO_6: // undo
             if (record->event.pressed) {
-                    SEND_STRING(SS_LCTL("z"));
+                SEND_STRING(SS_LCTL("z"));
             }
             break;
-        }
+    }
     return true;
 }
 
@@ -242,10 +254,13 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return 145;
         case LT(_FN1, KC_BSPC):
             return 155;
+        case TD(DM_MUPL):
+            return 200;
+        case TD(DM_VDPR):
+            return 285;
+        case TD(DM_VUNX):
+            return 285;
         default:
             return TAPPING_TERM;
     }
 }
-
-
-
