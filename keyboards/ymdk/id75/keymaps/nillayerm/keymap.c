@@ -277,6 +277,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 rgb_matrix_set_color(5, RGB_OFF);
             }
             break;
+        case LT(_FN2, KC_DOT): // turn LEDs back off when _FN2 layer is turned off
+            if (!record->event.pressed) {
+                rgb_matrix_set_color(1, RGB_OFF);
+                rgb_matrix_set_color(5, RGB_OFF);
+            }
+            break;
         case LT(_FN2, KC_CAPS): // turn LEDs back off when caps lock is turned off
             if (!record->event.pressed) {
                 rgb_matrix_set_color(1, RGB_OFF);
