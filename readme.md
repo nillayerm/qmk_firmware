@@ -24,7 +24,7 @@ You can request changes by making a fork and opening a [pull request](https://gi
    make magic_force/mf17:nillayerm
 ```
 
-* [Winry 25tc](/keyboards/winry/winry25tc/) rocking [atmega32u4](https://www.etechnophiles.com/atmega32u4-pinout/) with 32 Kbytes of flash memory, 48 MHz of clock speed, 2.5 KB of SRAM
+* [Winry 25tc](/keyboards/winry/winry25tc/) rocking [ATmega32u4](https://www.etechnophiles.com/atmega32u4-pinout/) with 32 Kbytes of flash memory, 48 MHz of clock speed, 2.5 KB of SRAM
 ```
    make winry/winry25tc:nillayerm
 ```
