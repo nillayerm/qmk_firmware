@@ -1,6 +1,8 @@
 {
+    "manufacturer": "YMDK",
     "keyboard_name": "Idobao x YMDK ID75",
     "maintainer": "qmk",
+    "bootloader_instructions": "Press the button on the back of the PCB twice in quick succession.",
     "diode_direction": "ROW2COL",
     "features": {
         "bootmagic": true,
@@ -11,15 +13,7 @@
     },
     "dynamic_keymap": {
     "layer_count": 5
-},
-/*
-"qmk": {
-    "locking": {
-        "enabled": true,
-        "resync": true
-    }
-},
-*/
+    },
     "rgb_matrix": {
         "animations": {
             "alphas_mods": true,
