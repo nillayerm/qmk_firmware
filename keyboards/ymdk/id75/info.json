@@ -11,6 +11,9 @@
         "nkro": true,
         "rgb_matrix": true
     },
+    "dynamic_keymap": {
+    "layer_count": 5
+    },
     "rgb_matrix": {
         "animations": {
             "alphas_mods": true,
@@ -155,7 +158,8 @@
     "usb": {
         "device_version": "0.0.1",
         "pid": "0x0075",
-        "vid": "0x594D"
+        "vid": "0x594D",
+        "suspend_wakeup_delay": 400
     },
     "community_layouts": ["ortho_5x15"],
     "layouts": {

@@ -1,4 +1,4 @@
-/* Copyright 2021 MT
+/* Copyright (C) 2023 jonylee@hfd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "quantum.h"
+#pragma once
 
-#ifdef RGB_MATRIX_ENABLE
-bool rgb_matrix_indicators_kb(void) {
-    if (!rgb_matrix_indicators_user()) {
-        return false;
-    }
+#define LED_WIN_LOCK_PIN        C11
+#define LED_FACT_PIN            A15
 
-    if (host_keyboard_led_state().caps_lock) { // dedicated per-key light zone for Capslock
-        // front side of the underglow
-        rgb_matrix_set_color(2, 6, 255, 65);
-        rgb_matrix_set_color(3, 6, 255, 65);
-        rgb_matrix_set_color(4, 6, 255, 65);
-    }
-    return true;
-}
-#endif
 
+
+/* SPI Config for spi flash*/
+#define SPI_DRIVER SPIDQ
+#define SPI_SCK_PIN B3
+#define SPI_MOSI_PIN B5
+#define SPI_MISO_PIN B4
+#define SPI_MOSI_PAL_MODE 5
+
+#define EXTERNAL_FLASH_SPI_SLAVE_SELECT_PIN C12
+
+/* I2C Config for LED Driver */
+#define SNLED27351_I2C_ADDRESS_1 SNLED27351_I2C_ADDRESS_GND
+#define SNLED27351_I2C_ADDRESS_2 SNLED27351_I2C_ADDRESS_VDDIO
+#define I2C1_CLOCK_SPEED 400000 /* 400000 */
+#define I2C1_OPMODE OPMODE_I2C
