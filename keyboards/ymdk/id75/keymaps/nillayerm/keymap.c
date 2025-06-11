@@ -27,7 +27,8 @@ enum layer_names {
  // customized macro keys
 enum custom_macros {
     // gaming macros
-    MA_TGFW = SAFE_RANGE, // hold down 'w' to continuously moving forward in game
+    QM_TGFW = SAFE_RANGE, // hold down 'w' to continuously moving forward in game
+    QM_TGML //hold down 'end' to toggle melee attack
 };
 
 // Tap Dance keycodes
@@ -85,10 +86,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* FN2 Layer */
     [_FN2] = LAYOUT_ortho_5x15(
         _______, _______, _______, _______, _______, _______, KC_F11,  KC_EQL, KC_F12,  _______,   _______,   _______, _______,  _______, _______,
-        KC_MPRV, _______, MA_TGFW, _______, _______, _______, KC_F7,   KC_F8,  KC_F9,   _______,   _______,   _______, _______,  KC_INS,  KC_DEL,
-        KC_MNXT, _______, _______, _______, _______, _______, KC_F4,   KC_F5,  KC_F6,   _______,   _______,   _______, _______,  _______, _______,
-        KC_TRNS, KC_HOME, KC_PGUP, KC_VOLU, _______, _______, KC_F1,   KC_F2,  KC_F3,   _______,   TD(MU_PL), _______, _______,  _______, _______,
-        KC_MPLY, KC_END,  KC_PGDN, KC_VOLD, KC_MUTE, _______, _______, KC_F10, KC_TRNS, TD(VD_PR), TD(VU_NX), _______, _______,  _______, _______
+        KC_MPRV, _______, QM_TGFW, QM_TGML, _______, _______, KC_F7,   KC_F8,  KC_F9,   _______,   _______,   _______, _______,  KC_INS,  KC_DEL,
+        KC_MNXT, _______, _______, _______, KC_PGDN, KC_PGUP, KC_F4,   KC_F5,  KC_F6,   _______,   _______,   _______, _______,  _______, _______,
+        KC_TRNS, KC_END,  _______, _______, _______, _______, KC_F1,   KC_F2,  KC_F3,   _______,   TD(MU_PL), _______, _______,  _______, _______,
+        KC_MPLY, _______, _______, _______, _______, _______, _______, KC_F10, KC_TRNS, TD(VD_PR), TD(VU_NX), _______, _______,  _______, _______
     ),
 
     /* System Layer */
@@ -293,10 +294,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         // customized macros
-        case MA_TGFW: // keep running
+        case QM_TGFW: // keep running
             if (record->event.pressed) {
                 SEND_STRING(
                     SS_DOWN(X_W)
+                );
+            }
+            break;
+        case QM_TGML: // keep meleeing
+            if (record->event.pressed) {
+                SEND_STRING(
+                    SS_DOWN(X_END)
                 );
             }
             break;
