@@ -67,11 +67,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* Base Layer (Default Layer) */
     [_BASE] = LAYOUT_ortho_5x15(
-        QK_GESC,           KC_1,    KC_2,    KC_3,      KC_4,               KC_5,     TD(BS_ES), TD(PL_AS), TD(MN_SL),        KC_6,    KC_7,   KC_8,    TD(K9_LB), TD(K0_RB), KC_PSCR,
-        KC_TAB,            KC_Q,    KC_W,    KC_E,      KC_R,               KC_T,     KC_7,      KC_8,      KC_9,             KC_Y,    KC_U,   KC_I,    KC_O,      KC_P,      KC_BSPC,
-        KC_LSFT,           KC_A,    KC_S,    KC_D,      KC_F,               KC_G,     KC_4,      KC_5,      KC_6,             KC_H,    KC_J,   KC_K,    KC_L,      KC_RSFT,   KC_ENT,
-        LT(_FN2, KC_CAPS), KC_Z,    KC_X,    KC_C,      KC_V,               KC_B,     KC_1,      KC_2,      KC_3,             KC_N,    KC_M,   KC_COMM, KC_DOT,    KC_UP,     KC_SLSH,
-        KC_LCTL,           KC_LGUI, KC_LALT, KC_SCLN,   LT(_FN2, KC_SPC),   MO(_FN1), TD(EN_BS), KC_0,      LT(_FN2, KC_DOT), KC_QUOT, KC_SPC, KC_RALT, KC_LEFT,   KC_DOWN,   KC_RGHT
+        QK_GESC,           KC_1,    KC_2,    KC_3,              KC_4,   KC_5,     TD(BS_ES), TD(PL_AS), TD(MN_SL),        KC_6,    KC_7,   KC_8,    TD(K9_LB), TD(K0_RB), KC_PSCR,
+        KC_TAB,            KC_Q,    KC_W,    KC_E,              KC_R,   KC_T,     KC_7,      KC_8,      KC_9,             KC_Y,    KC_U,   KC_I,    KC_O,      KC_P,      KC_BSPC,
+        KC_LSFT,           KC_A,    KC_S,    KC_D,              KC_F,   KC_G,     KC_4,      KC_5,      KC_6,             KC_H,    KC_J,   KC_K,    KC_L,      KC_RSFT,   KC_ENT,
+        LT(_FN2, KC_CAPS), KC_Z,    KC_X,    KC_C,              KC_V,   KC_B,     KC_1,      KC_2,      KC_3,             KC_N,    KC_M,   KC_COMM, KC_DOT,    KC_UP,     KC_SLSH,
+        KC_LCTL,           KC_LGUI, KC_LALT, LT(_FN2, KC_SCLN), KC_SPC, MO(_FN1), TD(EN_BS), KC_0,      LT(_FN2, KC_DOT), KC_QUOT, KC_SPC, KC_RALT, KC_LEFT,   KC_DOWN,   KC_RGHT
     ),
 
     /* FN1 Layer */
@@ -86,9 +86,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* FN2 Layer */
     [_FN2] = LAYOUT_ortho_5x15(
         _______, _______, _______, _______, _______, _______, KC_F11,  KC_EQL, KC_F12,  _______,   _______,   _______, _______,  _______, _______,
-        KC_MPRV, _______, QM_TGFW, QM_TGED, _______, _______, KC_F7,   KC_F8,  KC_F9,   _______,   _______,   _______, _______,  _______, _______,
+        KC_MPRV, _______, KC_END,  QM_TGED, _______, _______, KC_F7,   KC_F8,  KC_F9,   _______,   _______,   _______, _______,  _______, _______,
         KC_MNXT, _______, _______, _______, KC_PGDN, KC_PGUP, KC_F4,   KC_F5,  KC_F6,   _______,   _______,   _______, _______,  _______, _______,
-        KC_TRNS, KC_END,  _______, _______, _______, _______, KC_F1,   KC_F2,  KC_F3,   _______,   TD(MU_PL), _______, _______,  _______, _______,
+        KC_TRNS, _______, _______, _______, _______, _______, KC_F1,   KC_F2,  KC_F3,   _______,   TD(MU_PL), _______, _______,  _______, _______,
         KC_MPLY, _______, _______, _______, _______, _______, _______, KC_F10, KC_TRNS, TD(VD_PR), TD(VU_NX), _______, _______,  _______, _______
     ),
 
@@ -278,6 +278,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 rgb_matrix_set_color(5, RGB_OFF);
             }
             break;
+        case LT(_FN2, KC_SCLN): // turn LEDs back off when _FN2 layer is turned off
+            if (!record->event.pressed) {
+                rgb_matrix_set_color(1, RGB_OFF);
+                rgb_matrix_set_color(5, RGB_OFF);
+            }
+            break;
         case LT(_FN2, KC_DOT): // turn LEDs back off when _FN2 layer is turned off
             if (!record->event.pressed) {
                 rgb_matrix_set_color(1, RGB_OFF);
@@ -315,8 +321,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // tapping term adjustment here
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LT(_FN2, KC_SPC):
-            return 120;
+        case LT(_FN2, KC_SCLN):
+            return 135;
         case LT(_FN2, KC_CAPS):
             return 155;
         case LT(_FN2, KC_DOT):
