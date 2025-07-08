@@ -189,7 +189,6 @@
     },
     "usb": {
         "device_version": "1.0.4",
-        "force_nkro": true,
         "pid": "0x0008",
         "suspend_wakeup_delay": 400,
         "vid": "0xFFFE"
