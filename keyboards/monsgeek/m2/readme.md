@@ -1,5 +1,5 @@
 # MonsGeek M2
-[![M2](https://s21.ax1x.com/2024/03/23/pFhDAqH.md.png)](https://imgse.com/i/pFhDAqH)
+![M2](https://i.imgur.com/kv9ChJn.png)
 
 A customizable 95% keyboard
 

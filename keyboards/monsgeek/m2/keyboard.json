@@ -4,26 +4,28 @@
     "maintainer": "jonylee@hfd",
     "bootloader": "wb32-dfu",
     "diode_direction": "ROW2COL",
-    "eeprom": {
-        "driver": "wear_leveling",
-        "wear_leveling": {
-            "driver": "spi_flash",
-            "backing_size": 8192
-        }
-    },
     "dynamic_keymap": {
         "layer_count": 6
     },
+    "eeprom": {
+        "driver": "wear_leveling",
+        "wear_leveling": {
+            "backing_size": 8192,
+            "driver": "spi_flash"
+        }
+    },
     "features": {
         "bootmagic": true,
-        "command": false,
-        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": true,
         "rgb_matrix": true
     },
-    
+    "host": {
+        "default": {
+            "nkro": true
+        }
+    },
     /* LED Indicators
         Pin A15 is originally for CapsLock, it somehow switched its position with Num Lock.
         1. So originally:
@@ -46,20 +48,20 @@
             Then Added Factory Layer indicator on Num Lock's position.
     */
     "indicators": {
-        "caps_lock": "C10",
-        // "num_lock": "A15"
-    },
-    "qmk": {
-        "locking": {
-            "enabled": true,
-            "resync": true
-        }
+        "caps_lock": "C10"
+        // , "num_lock": "A15"
     },
     "matrix_pins": {
         "cols": ["C1", "C2", "C3", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "C4", "C5", "B0", "B1", "B2", "B10", "B11", "B12", "B13", "B14"],
         "rows": ["B15", "C6", "C7", "C8", "C9", "A8"]
     },
     "processor": "WB32FQ95",
+    "qmk": {
+        "locking": {
+            "enabled": true,
+            "resync": true
+        }
+    },
     "rgb_matrix": {
         "animations": {
             "breathing": true,
@@ -182,9 +184,8 @@
             {"matrix": [5, 19], "x": 210, "y": 64, "flags": 4}
         ],
         "max_brightness": 200,
-        "val_steps": 20,
         "sleep": true,
-        
+        "val_steps": 20
     },
     "usb": {
         "device_version": "1.0.4",
