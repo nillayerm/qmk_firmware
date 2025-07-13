@@ -322,7 +322,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LT(_FN2, KC_SCLN):
-            return 135;
+            return 155;
         case LT(_FN2, KC_CAPS):
             return 155;
         case LT(_FN2, KC_DOT):
