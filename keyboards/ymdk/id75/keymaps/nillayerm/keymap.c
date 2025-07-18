@@ -70,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         QK_GESC,           KC_1,    KC_2,    KC_3,              KC_4,   KC_5,     TD(BS_ES), TD(PL_AS), TD(MN_SL),        KC_6,    KC_7,   KC_8,    TD(K9_LB), TD(K0_RB), KC_PSCR,
         KC_TAB,            KC_Q,    KC_W,    KC_E,              KC_R,   KC_T,     KC_7,      KC_8,      KC_9,             KC_Y,    KC_U,   KC_I,    KC_O,      KC_P,      KC_BSPC,
         KC_LSFT,           KC_A,    KC_S,    KC_D,              KC_F,   KC_G,     KC_4,      KC_5,      KC_6,             KC_H,    KC_J,   KC_K,    KC_L,      KC_RSFT,   KC_ENT,
-        LT(_FN2, KC_CAPS), KC_Z,    KC_X,    KC_C,              KC_V,   KC_B,     KC_1,      KC_2,      KC_3,             KC_N,    KC_M,   KC_COMM, KC_DOT,    KC_UP,     KC_SLSH,
+        LT(_FN2, KC_CAPS), KC_SLSH, KC_Z,    KC_X,              KC_C,   KC_V,     KC_1,      KC_2,      KC_3,             KC_B,    KC_N,   KC_M,    KC_COMM,   KC_UP,     KC_DOT,
         KC_LCTL,           KC_LGUI, KC_LALT, LT(_FN2, KC_SCLN), KC_SPC, MO(_FN1), TD(EN_BS), KC_0,      LT(_FN2, KC_DOT), KC_QUOT, KC_SPC, KC_RALT, KC_LEFT,   KC_DOWN,   KC_RGHT
     ),
 
@@ -79,7 +79,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         TG(_LOCK), _______, G(S(KC_S)), _______, C(S(KC_V)), C(S(KC_T)), _______,   _______,   _______, _______, _______, _______, _______,  _______, _______,
         _______,   C(KC_Q), C(KC_W),    C(KC_E), C(KC_R), C(KC_T),       _______,   _______,   _______, _______, _______, _______, _______,  _______, RGB_TOG,
         _______,   C(KC_A), C(KC_S),    C(KC_D), C(KC_F), MO(_SYST),     _______,   _______,   _______, _______, _______, _______, _______,  _______, _______,
-        TG(_FN2),  C(KC_Z), C(KC_X),    C(KC_C), C(KC_V), QK_LOCK,       TD(MU_PL), _______,   _______, _______, _______, _______, _______,  RGB_VAI, _______,
+        TG(_FN2),  _______, C(KC_Z),    C(KC_X), C(KC_C), C(KC_V),       TD(MU_PL), _______,   _______, _______, _______, _______, _______,  RGB_VAI, _______,
         _______,   _______, _______,    _______, _______, KC_TRNS,       TD(VD_PR), TD(VU_NX), _______, _______, _______, KC_RCTL, RGB_RMOD, RGB_VAD, RGB_MOD
     ),
 
@@ -88,8 +88,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, _______, _______, KC_F11,  KC_EQL, KC_F12,  _______,   _______,   _______, _______,  _______, _______,
         KC_MPRV, _______, KC_END,  QM_TGED, _______, _______, KC_F7,   KC_F8,  KC_F9,   _______,   _______,   _______, _______,  _______, _______,
         KC_MNXT, _______, _______, _______, KC_PGDN, KC_PGUP, KC_F4,   KC_F5,  KC_F6,   _______,   _______,   _______, _______,  _______, _______,
-        KC_TRNS, _______, _______, _______, _______, _______, KC_F1,   KC_F2,  KC_F3,   _______,   TD(MU_PL), _______, _______,  _______, _______,
-        KC_MPLY, _______, _______, _______, _______, _______, _______, KC_F10, KC_TRNS, TD(VD_PR), TD(VU_NX), _______, _______,  _______, _______
+        KC_TRNS, _______, _______, QK_LOCK, _______, _______, KC_F1,   KC_F2,  KC_F3,   _______,   TD(MU_PL), _______, _______,  _______, _______,
+        KC_MPLY, _______, _______, KC_TRNS, _______, _______, _______, KC_F10, KC_TRNS, TD(VD_PR), TD(VU_NX), _______, _______,  _______, _______
     ),
 
     /* System Layer */
@@ -322,7 +322,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LT(_FN2, KC_SCLN):
-            return 155;
+            return 165;
         case LT(_FN2, KC_CAPS):
             return 155;
         case LT(_FN2, KC_DOT):
