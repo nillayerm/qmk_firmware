@@ -16,7 +16,7 @@
 
 #pragma once
 
-#define TAPPING_TERM 175
+#define TAPPING_TERM 148
 #define TAPPING_TERM_PER_KEY
 
 #define GRAVE_ESC_CTRL_OVERRIDE // Enabled for the GRAVE_ESC to be used with 'Ctrl + Shift + Esc' Key combination
