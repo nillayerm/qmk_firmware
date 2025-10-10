@@ -32,18 +32,25 @@ enum custom_macros {
 
 // Tap Dance keycodes
 enum td_keycodes {
-    MU_PL, // mute and play
-    VD_PR, // volume down and previous track
-    VU_NX, // volume up and next track
-    SP_RA, // space and right alt
-    N5_F5, // 5 and F5
-    NL_EC, // numlock and escape
-    PL_EQ, // plus and asterisk
-    MN_SL, // minus and slash
-    K9_LB, // o and left bracket
-    K0_RB, // p and right bracket
-    BK_RS, // enter and right shift
-    DT_LS, // dot and left shift
+    MU_PL, // 'mute' and 'play'
+    VD_PR, // 'volume down' and 'previous track'
+    VU_NX, // 'volume up' and 'next track'
+    NL_EC, // 'numlock' and 'escape'
+    PL_EQ, // 'plus' and 'asterisk'
+    MN_SL, // 'minus' and 'slash'
+    K9_LB, // 'o' and 'left bracket'
+    K0_RB, // 'p' and 'right bracket'
+    PD_PA, // 'numpad dot' and 'numpad asterisk'
+    KM_CM, // 'm' and 'comma'
+    SL_UP, // 'slash' and 'up'
+    PD_DN, // 'page dowm' and 'down'
+    PU_LF, // 'page up' and 'left'
+    BS_RT, // 'backslash' and 'right'
+    BK_ET, // 'backspace' and 'enter'
+    P8_UP, // 'slash' and 'up'
+    P5_DN, // 'page dowm' and 'down'
+    P4_LF, // 'page up' and 'left'
+    P6_RT, // 'backslash' and 'right'
 };
 
 // various actions for Tap Dance
@@ -55,45 +62,40 @@ typedef struct {
 
 const key_override_t backspace_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_MINS);
 const key_override_t pscr_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_PSCR, KC_UNDS);
-const key_override_t p2_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_P2, KC_PAST);
-const key_override_t p5_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_P5, KC_DOWN);
-
 
 // This globally defines all key overrides to be used
 const key_override_t *key_overrides[] = {
     &backspace_key_override,
     &pscr_key_override,
-    &p2_key_override,
-    &p5_key_override,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* Base Layer (Default Layer) */
     [_BASE] = LAYOUT_ortho_5x15(
-        QK_GESC,  KC_1,     KC_2,     KC_3,               KC_4,    KC_5,      TD(NL_EC),  TD(PL_EQ),  TD(MN_SL),  KC_6,     KC_7,    KC_8,     TD(K9_LB),  TD(K0_RB),  KC_PSCR,
-        KC_TAB,   KC_Q,     KC_W,     KC_E,               KC_R,    KC_T,      KC_P7,      KC_P8,      KC_P9,      KC_Y,     KC_U,    KC_I,     KC_O,       KC_P,       KC_BSPC,
-        KC_LSFT,  KC_A,     KC_S,     KC_D,               KC_F,    KC_G,      KC_P4,      KC_P5,      KC_P6,      KC_H,     KC_J,    KC_K,     KC_L,       KC_RSFT,    KC_ENT,
-        XXXXXXX,  KC_COMM,  KC_Z,     KC_X,               KC_C,    KC_V,      KC_P1,      KC_P2,      KC_P3,      KC_B,     KC_N,    KC_M,     KC_DOT,     KC_SLSH,    XXXXXXX,
-        KC_LCTL,  KC_LGUI,  KC_LALT,  LT(_FN2, KC_SCLN),  KC_SPC,  MO(_FN1),  TD(BK_RS),  KC_P0,      TD(DT_LS),  KC_QUOT,  KC_SPC,  KC_RALT,  KC_BSLS,    KC_CAPS,    KC_RCTL
+        QK_GESC,  KC_1,     KC_2,     KC_3,               KC_4,    KC_5,      TD(NL_EC),  TD(PL_EQ),  TD(MN_SL),  KC_6,    KC_7,    KC_8,      TD(K9_LB),  TD(K0_RB),  KC_PSCR,
+        KC_TAB,   KC_Q,     KC_W,     KC_E,               KC_R,    KC_T,      KC_P7,      TD(P8_UP),  KC_P9,      KC_Y,    KC_U,    KC_I,      KC_O,       KC_P,       KC_BSPC,
+        KC_LSFT,  KC_A,     KC_S,     KC_D,               KC_F,    KC_G,      TD(P4_LF),  TD(P5_DN),  TD(P6_RT),  KC_H,    KC_J,    KC_K,      KC_L,       KC_RSFT,    KC_ENT,
+        XXXXXXX,  KC_RALT,  KC_Z,     KC_X,               KC_C,    KC_V,      KC_P1,      KC_P2,      KC_P3,      KC_B,    KC_N,    TD(KM_CM), KC_DOT,     TD(SL_UP),  XXXXXXX,
+        KC_LCTL,  KC_LGUI,  KC_LALT,  LT(_FN2, KC_SCLN),  KC_SPC,  MO(_FN1),  TD(BK_ET),  KC_P0,      TD(PD_PA),  KC_QUOT, KC_SPC,  KC_RALT,   TD(PU_LF),  TD(PD_DN),  TD(BS_RT)
     ),
 
     /* FN1 Layer */
     [_FN1] = LAYOUT_ortho_5x15(
         KC_F12,    KC_F1,      KC_F2,     KC_F3,    KC_F4,    KC_F5,      _______,    _______,    _______,  KC_F6,    KC_F7,    KC_F8,    KC_F9,      KC_F10,   KC_F11,
         KC_CAPS,   C(KC_Q),    C(KC_W),   C(KC_E),  C(KC_R),  C(KC_T),    _______,    _______,    _______,  _______,  _______,  _______,  _______,    _______,  RM_TOGG,
-        KC_ENT,    C(KC_A),    C(KC_S),   C(KC_D),  C(KC_F),  MO(_SYST),  _______,    _______,    _______,  _______,  _______,  _______,  TG(_LOCK),  _______,  XXXXXXX,
-        XXXXXXX,   C(S(KC_T)), C(KC_Z),   C(KC_X),  C(KC_C),  C(KC_V),    TD(VU_NX),  _______,    _______,  _______,  _______,  _______,  _______,    RM_VALU,  _______,
-        _______,   _______,    _______,   _______,  _______,  KC_TRNS,    TD(VD_PR),  TD(MU_PL),  _______,  _______,  _______,  _______,  RM_PREV,    RM_VALD,  RM_NEXT
+        KC_ENT,    C(KC_A),    C(KC_S),   C(KC_D),  C(KC_F),  MO(_SYST),  _______,    _______,    _______,  _______,  _______,  _______,  TG(_LOCK),  _______,  _______,
+        XXXXXXX,   C(S(KC_T)), C(KC_Z),   C(KC_X),  C(KC_C),  C(KC_V),    _______,    _______,    _______,  _______,  _______,  _______,  _______,    RM_VALU,  XXXXXXX,
+        _______,   _______,    _______,   _______,  _______,  KC_TRNS,    KC_ENT,     _______,    _______,  _______,  _______,  _______,  RM_PREV,    RM_VALD,  RM_NEXT
     ),
 
     /* FN2 Layer */
     [_FN2] = LAYOUT_ortho_5x15(
-        _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,    _______,
-        _______, _______, QM_TGFW, QM_TGED, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,    _______,
-        _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,    _______,
-        _______, _______, _______, QK_LOCK, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,    _______,
-        _______, _______, _______, KC_TRNS, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  TD(VD_PR),  TD(MU_PL),  TD(VU_NX)
+        _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,
+        KC_CAPS, _______, QM_TGFW, QM_TGED, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,
+        KC_ENT,  _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,
+        XXXXXXX, _______, _______, QK_LOCK, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,  TD(VU_NX),  XXXXXXX,
+        _______, _______, _______, KC_TRNS, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,  TD(VD_PR),  TD(MU_PL)
     ),
 
     /* System Layer */
@@ -171,15 +173,22 @@ tap_dance_action_t tap_dance_actions[] = {
     [MU_PL] = ACTION_TAP_DANCE_TAP_HOLD(KC_MUTE, KC_MPLY),
     [VD_PR] = ACTION_TAP_DANCE_TAP_HOLD(KC_VOLD, KC_MPRV),
     [VU_NX] = ACTION_TAP_DANCE_TAP_HOLD(KC_VOLU, KC_MNXT),
-    [SP_RA] = ACTION_TAP_DANCE_TAP_HOLD(KC_SPC, KC_RALT),
-    [N5_F5] = ACTION_TAP_DANCE_TAP_HOLD(KC_5, KC_F5),
     [NL_EC] = ACTION_TAP_DANCE_TAP_HOLD(KC_NUM, KC_ESC),
     [PL_EQ] = ACTION_TAP_DANCE_TAP_HOLD(KC_PPLS, KC_EQL),
     [MN_SL] = ACTION_TAP_DANCE_TAP_HOLD(KC_MINS, KC_SLSH),
     [K9_LB] = ACTION_TAP_DANCE_TAP_HOLD(KC_9, KC_LBRC),
     [K0_RB] = ACTION_TAP_DANCE_TAP_HOLD(KC_0, KC_RBRC),
-    [BK_RS] = ACTION_TAP_DANCE_TAP_HOLD(KC_BSPC, KC_RSFT),
-    [DT_LS] = ACTION_TAP_DANCE_TAP_HOLD(KC_PDOT, KC_LSFT),
+    [PD_PA] = ACTION_TAP_DANCE_TAP_HOLD(KC_PDOT, KC_PAST),
+    [KM_CM] = ACTION_TAP_DANCE_TAP_HOLD(KC_M, KC_COMM),
+    [SL_UP] = ACTION_TAP_DANCE_TAP_HOLD(KC_SLSH, KC_UP),
+    [PD_DN] = ACTION_TAP_DANCE_TAP_HOLD(KC_PGDN, KC_DOWN),
+    [PU_LF] = ACTION_TAP_DANCE_TAP_HOLD(KC_PGUP, KC_LEFT),
+    [BS_RT] = ACTION_TAP_DANCE_TAP_HOLD(KC_BSLS, KC_RGHT),
+    [BK_ET] = ACTION_TAP_DANCE_TAP_HOLD(KC_BSPC, KC_ENT),
+    [P8_UP] = ACTION_TAP_DANCE_TAP_HOLD(KC_P8, KC_UP),
+    [P5_DN] = ACTION_TAP_DANCE_TAP_HOLD(KC_P5, KC_DOWN),
+    [P6_RT] = ACTION_TAP_DANCE_TAP_HOLD(KC_P6, KC_RGHT),
+    [P4_LF] = ACTION_TAP_DANCE_TAP_HOLD(KC_P4, KC_LEFT),
 };
 
 /*
@@ -207,20 +216,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case TD(VU_NX):
-            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
-            if (!record->event.pressed && action->state.count && !action->state.finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(SP_RA):
-            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
-            if (!record->event.pressed && action->state.count && !action->state.finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(N5_F5):
             action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
             if (!record->event.pressed && action->state.count && !action->state.finished) {
             tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
@@ -262,14 +257,77 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             tap_code16(tap_hold->tap);
             }
             break;
-        case TD(BK_RS):
+        case TD(PD_PA):
             action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
             if (!record->event.pressed && action->state.count && !action->state.finished) {
             tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
             tap_code16(tap_hold->tap);
             }
             break;
-        case TD(DT_LS):
+        case TD(KM_CM):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
+            }
+            break;
+        case TD(SL_UP):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
+            }
+            break;
+        case TD(PD_DN):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
+            }
+            break;
+        case TD(PU_LF):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
+            }
+            break;
+        case TD(BS_RT):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
+            }
+            break;
+        case TD(BK_ET):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
+            }
+            break;
+        case TD(P8_UP):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
+            }
+            break;
+        case TD(P5_DN):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
+            }
+            break;
+        case TD(P4_LF):
+            action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
+            if (!record->event.pressed && action->state.count && !action->state.finished) {
+            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+            tap_code16(tap_hold->tap);
+            }
+            break;
+        case TD(P6_RT):
             action = &tap_dance_actions[QK_TAP_DANCE_GET_INDEX(keycode)];
             if (!record->event.pressed && action->state.count && !action->state.finished) {
             tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
@@ -316,11 +374,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case TD(MU_PL):
-            return 200;
+            return 190;
         case TD(VD_PR):
-            return 275;
+            return 225;
         case TD(VU_NX):
-            return 275;
+            return 225;
+        case TD(KM_CM):
+            return 145;
         default:
             return TAPPING_TERM;
     }
