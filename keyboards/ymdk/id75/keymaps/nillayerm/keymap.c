@@ -75,8 +75,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_ortho_5x15(
         QK_GESC,  KC_1,     KC_2,     KC_3,               KC_4,    KC_5,      TD(NL_EC),  TD(PL_EQ),  TD(MN_SL),  KC_6,    KC_7,    KC_8,      TD(K9_LB),  TD(K0_RB),  KC_PSCR,
         KC_TAB,   KC_Q,     KC_W,     KC_E,               KC_R,    KC_T,      KC_P7,      TD(P8_UP),  KC_P9,      KC_Y,    KC_U,    KC_I,      KC_O,       KC_P,       KC_BSPC,
-        KC_LSFT,  KC_A,     KC_S,     KC_D,               KC_F,    KC_G,      TD(P4_LF),  TD(P5_DN),  TD(P6_RT),  KC_H,    KC_J,    KC_K,      KC_L,       KC_RSFT,    KC_ENT,
-        XXXXXXX,  KC_RALT,  KC_Z,     KC_X,               KC_C,    KC_V,      KC_P1,      KC_P2,      KC_P3,      KC_B,    KC_N,    TD(KM_CM), KC_DOT,     TD(SL_UP),  XXXXXXX,
+        KC_LSFT,  KC_A,     KC_S,     KC_D,               KC_F,    KC_G,      TD(P4_LF),  TD(P5_DN),  TD(P6_RT),  KC_H,    KC_J,    KC_K,      KC_L,       KC_RSFT,    XXXXXXX,
+        XXXXXXX,  KC_RALT,  KC_Z,     KC_X,               KC_C,    KC_V,      KC_P1,      KC_P2,      KC_P3,      KC_B,    KC_N,    TD(KM_CM), KC_DOT,     TD(SL_UP),  KC_ENT,
         KC_LCTL,  KC_LGUI,  KC_LALT,  LT(_FN2, KC_SCLN),  KC_SPC,  MO(_FN1),  TD(BK_ET),  KC_P0,      TD(PD_PA),  KC_QUOT, KC_SPC,  KC_RALT,   TD(PU_LF),  TD(PD_DN),  TD(BS_RT)
     ),
 
@@ -84,8 +84,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_FN1] = LAYOUT_ortho_5x15(
         KC_F12,    KC_F1,      KC_F2,     KC_F3,    KC_F4,    KC_F5,      _______,    _______,    _______,  KC_F6,    KC_F7,    KC_F8,    KC_F9,      KC_F10,   KC_F11,
         KC_CAPS,   C(KC_Q),    C(KC_W),   C(KC_E),  C(KC_R),  C(KC_T),    _______,    _______,    _______,  _______,  _______,  _______,  _______,    _______,  RM_TOGG,
-        KC_ENT,    C(KC_A),    C(KC_S),   C(KC_D),  C(KC_F),  MO(_SYST),  _______,    _______,    _______,  _______,  _______,  _______,  TG(_LOCK),  _______,  _______,
-        XXXXXXX,   C(S(KC_T)), C(KC_Z),   C(KC_X),  C(KC_C),  C(KC_V),    TD(VU_NX),  _______,    _______,  _______,  _______,  _______,  _______,    RM_VALU,  XXXXXXX,
+        KC_ENT,    C(KC_A),    C(KC_S),   C(KC_D),  C(KC_F),  MO(_SYST),  _______,    _______,    _______,  _______,  _______,  _______,  TG(_LOCK),  _______,  XXXXXXX,
+        XXXXXXX,   C(S(KC_T)), C(KC_Z),   C(KC_X),  C(KC_C),  C(KC_V),    TD(VU_NX),  _______,    _______,  _______,  _______,  _______,  _______,    RM_VALU,  _______,
         _______,   _______,    _______,   _______,  _______,  KC_TRNS,    TD(VD_PR),  TD(MU_PL),  _______,  _______,  _______,  _______,  RM_PREV,    RM_VALD,  RM_NEXT
     ),
 
@@ -93,8 +93,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_FN2] = LAYOUT_ortho_5x15(
         _______, _______, _______, _______, _______, _______, _______,    _______,    _______,  _______,  _______,  _______,  _______,  _______,    _______,
         KC_CAPS, _______, QM_TGFW, QM_TGED, _______, _______, _______,    _______,    _______,  _______,  _______,  _______,  _______,  _______,    _______,
-        KC_ENT,  _______, _______, _______, _______, _______, _______,    _______,    _______,  _______,  _______,  _______,  _______,  _______,    _______,
-        XXXXXXX, _______, _______, QK_LOCK, _______, _______, TD(VU_NX),  _______,    _______,  _______,  _______,  _______,  _______,  TD(VU_NX),  XXXXXXX,
+        KC_ENT,  _______, _______, _______, _______, _______, _______,    _______,    _______,  _______,  _______,  _______,  _______,  _______,    XXXXXXX,
+        XXXXXXX, _______, _______, QK_LOCK, _______, _______, TD(VU_NX),  _______,    _______,  _______,  _______,  _______,  _______,  TD(VU_NX),  _______,
         _______, _______, _______, KC_TRNS, _______, _______, TD(VD_PR),  TD(MU_PL),  _______,  _______,  _______,  _______,  _______,  TD(VD_PR),  TD(MU_PL)
     ),
 
