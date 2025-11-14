@@ -318,7 +318,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         // Turn LEDs off to indicate current status
-        case TG(_LOCK): // turn LEDs back off when All Key Lock layer is turend off
+        case TG(_LOCK): // turn LEDs back off when All Key Lock layer is turned off
             if (!record->event.pressed) {
                 rgb_matrix_set_color(0, RGB_OFF);
                 rgb_matrix_set_color(1, RGB_OFF);
@@ -326,7 +326,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 rgb_matrix_set_color(6, RGB_OFF);
             }
             break;
-        case KC_CAPS: // turn LEDs back off when All Key Lock layer is turend off
+        case KC_CAPS: // turn LEDs back off when All Key Lock layer is turned off
             if (!record->event.pressed) {
                 rgb_matrix_set_color(2, RGB_OFF);
                 rgb_matrix_set_color(3, RGB_OFF);

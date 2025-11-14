@@ -19,9 +19,9 @@
 #define TAPPING_TERM 175
 #define TAPPING_TERM_PER_KEY
 
-#define GRAVE_ESC_CTRL_OVERRIDE // Enabled for the GRAVE_ESC to be used with 'Ctrl + Shift + Esc' Key combination
+#define GRAVE_ESC_CTRL_OVERRIDE /* Enabled for the GRAVE_ESC to be used with 'Ctrl + Shift + Esc' Key combination */
 
-#define RGB_MATRIX_DEFAULT_ON true // Sets the default enabled state, if none has been set
-#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_PIXEL_RAIN // Sets the default mode, if none has been set
+#define RGB_MATRIX_DEFAULT_ON true /* Sets the default enabled state, if none has been set */
+#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_PIXEL_RAIN /* Sets the default mode, if none has been set */
 
-// #define RGB_MATRIX_DEFAULT_SPD 127 // Sets the default animation speed, if none has been set
+/* #define RGB_MATRIX_DEFAULT_SPD 127 /* Sets the default animation speed, if none has been set */ */
