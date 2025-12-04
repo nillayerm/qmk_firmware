@@ -15,6 +15,9 @@
  */
 
 #include QMK_KEYBOARD_H
+/* Prototypes for tap-dance helpers used in this file */
+#include "quantum/keymap_introspection.h"
+#include "quantum/process_keycode/process_tap_dance.h"
 
 enum layer_names {
     _BASE,
@@ -57,6 +60,40 @@ typedef struct {
     uint16_t hold;
     uint16_t held;
 } tap_dance_tap_hold_t;
+
+// when tap-hold for tap dance gets finished
+void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (state->pressed) {
+        if (state->count == 1
+    #ifndef PERMISSIVE_HOLD
+            && !state->interrupted
+    #endif
+        ) {
+            register_code16(tap_hold->hold);
+            tap_hold->held = tap_hold->hold;
+        } else {
+            register_code16(tap_hold->tap);
+            tap_hold->held = tap_hold->tap;
+        }
+    }
+}
+// when tap-hold for tap dance gets reset
+void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (tap_hold->held) {
+        unregister_code16(tap_hold->held);
+        tap_hold->held = 0;
+    }
+}
+// Tap Dance tap-hold actions finalization
+#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold)                                        \
+    {                                                                               \
+        .fn        = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, \
+        .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}),               \
+    }
 
 const key_override_t backspace_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_MINS);
 const key_override_t pscr_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_PSCR, KC_UNDS);
@@ -134,37 +171,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
     return false;
 }
-
-// when tap-hold for tap dance gets finished
-void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
-    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
-
-    if (state->pressed) {
-        if (state->count == 1
-    #ifndef PERMISSIVE_HOLD
-            && !state->interrupted
-    #endif
-        ) {
-            register_code16(tap_hold->hold);
-            tap_hold->held = tap_hold->hold;
-        } else {
-            register_code16(tap_hold->tap);
-            tap_hold->held = tap_hold->tap;
-        }
-    }
-}
-// when tap-hold for tap dance gets reset
-void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
-    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
-
-    if (tap_hold->held) {
-        unregister_code16(tap_hold->held);
-        tap_hold->held = 0;
-    }
-}
-// Tap Dance tap-hold actions finalization
-#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
-    { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
 
 // Key assignment for Tap Dance keycodes
 tap_dance_action_t tap_dance_actions[] = {
