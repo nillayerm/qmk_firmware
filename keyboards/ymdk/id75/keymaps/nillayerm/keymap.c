@@ -42,16 +42,11 @@ enum td_keycodes {
     PL_EQ, // 'plus' and 'asterisk'
     MN_SL, // 'minus' and 'slash'
     PD_PA, // 'numpad dot' and 'numpad asterisk'
-    KM_CM, // 'm' and 'comma'
-    UP_SL, // 'up' and 'slash'
-    DN_RB, // 'down' and 'right bracket'
-    LF_LB, // 'left' and 'left bracket'
-    RT_BS, // 'right' and 'backslash'
+    KM_CO, // 'm' and 'comma'
     BK_ET, // 'backspace' and 'enter'
-    P8_UP, // 'slash' and 'up'
-    P5_DN, // 'page dowm' and 'down'
-    P4_LF, // 'page up' and 'left'
-    P6_RT, // 'backslash' and 'right'
+    N9_LB, // '9' and 'left bracket'
+    N0_RB, // '0' and 'right bracket'
+    PS_BS, // 'Print Screen' and 'backslash'
 };
 
 // various actions for Tap Dance
@@ -108,11 +103,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* Base Layer (Default Layer) */
     [_BASE] = LAYOUT_ortho_5x15(
-        QK_GESC,  KC_1,     KC_2,     KC_3,               KC_4,    KC_5,      TD(NL_EC),  TD(PL_EQ),  TD(MN_SL),  KC_6,    KC_7,    KC_8,      KC_9,       KC_0,       KC_PSCR,
-        KC_TAB,   KC_Q,     KC_W,     KC_E,               KC_R,    KC_T,      KC_P7,      TD(P8_UP),  KC_P9,      KC_Y,    KC_U,    KC_I,      KC_O,       KC_P,       KC_BSPC,
-        KC_LSFT,  KC_A,     KC_S,     KC_D,               KC_F,    KC_G,      TD(P4_LF),  TD(P5_DN),  TD(P6_RT),  KC_H,    KC_J,    KC_K,      KC_L,       KC_RSFT,    XXXXXXX,
-        XXXXXXX,  KC_SLSH,  KC_Z,     KC_X,               KC_C,    KC_V,      KC_P1,      KC_P2,      KC_P3,      KC_B,    KC_N,    TD(KM_CM), KC_DOT,     TD(UP_SL),  KC_ENT,
-        KC_LCTL,  KC_LGUI,  KC_LALT,  LT(_FN2, KC_SCLN),  KC_SPC,  MO(_FN1),  TD(BK_ET),  KC_P0,      TD(PD_PA),  KC_QUOT, KC_SPC,  KC_RALT,   TD(LF_LB),  TD(DN_RB),  TD(RT_BS)
+        QK_GESC,  KC_1,     KC_2,     KC_3,               KC_4,    KC_5,      TD(NL_EC),  TD(PL_EQ),  TD(MN_SL),  KC_6,    KC_7,    KC_8,      TD(N9_LB),  TD(N0_RB),  TD(PS_BS),
+        KC_TAB,   KC_Q,     KC_W,     KC_E,               KC_R,    KC_T,      KC_P7,      KC_P8,      KC_P9,      KC_Y,    KC_U,    KC_I,      KC_O,       KC_P,       KC_BSPC,
+        KC_LSFT,  KC_A,     KC_S,     KC_D,               KC_F,    KC_G,      KC_P4,      KC_P5,      KC_P6,      KC_H,    KC_J,    KC_K,      KC_L,       KC_RSFT,    XXXXXXX,
+        XXXXXXX,  KC_SLSH,  KC_Z,     KC_X,               KC_C,    KC_V,      KC_P1,      KC_P2,      KC_P3,      KC_B,    KC_N,    TD(KM_CO), KC_DOT,     KC_UP,      KC_ENT,
+        KC_LCTL,  KC_LGUI,  KC_LALT,  LT(_FN2, KC_SCLN),  KC_SPC,  MO(_FN1),  TD(BK_ET),  KC_P0,      TD(PD_PA),  KC_QUOT, KC_SPC,  KC_RALT,   KC_LEFT,    KC_DOWN,    KC_RGHT
     ),
 
     /* FN1 Layer */
@@ -181,16 +176,11 @@ tap_dance_action_t tap_dance_actions[] = {
     [PL_EQ] = ACTION_TAP_DANCE_TAP_HOLD(KC_PPLS, KC_EQL),
     [MN_SL] = ACTION_TAP_DANCE_TAP_HOLD(KC_MINS, KC_SLSH),
     [PD_PA] = ACTION_TAP_DANCE_TAP_HOLD(KC_PDOT, KC_PAST),
-    [KM_CM] = ACTION_TAP_DANCE_TAP_HOLD(KC_M, KC_COMM),
-    [UP_SL] = ACTION_TAP_DANCE_TAP_HOLD(KC_UP, KC_SLSH),
-    [DN_RB] = ACTION_TAP_DANCE_TAP_HOLD(KC_DOWN, KC_RBRC),
-    [LF_LB] = ACTION_TAP_DANCE_TAP_HOLD(KC_LEFT, KC_LBRC),
-    [RT_BS] = ACTION_TAP_DANCE_TAP_HOLD(KC_RGHT, KC_BSLS),
+    [KM_CO] = ACTION_TAP_DANCE_TAP_HOLD(KC_M, KC_COMM),
     [BK_ET] = ACTION_TAP_DANCE_TAP_HOLD(KC_BSPC, KC_ENT),
-    [P8_UP] = ACTION_TAP_DANCE_TAP_HOLD(KC_P8, KC_UP),
-    [P5_DN] = ACTION_TAP_DANCE_TAP_HOLD(KC_P5, KC_DOWN),
-    [P6_RT] = ACTION_TAP_DANCE_TAP_HOLD(KC_P6, KC_RGHT),
-    [P4_LF] = ACTION_TAP_DANCE_TAP_HOLD(KC_P4, KC_LEFT),
+    [N9_LB] = ACTION_TAP_DANCE_TAP_HOLD(KC_9, KC_LBRC),
+    [N0_RB] = ACTION_TAP_DANCE_TAP_HOLD(KC_0, KC_RBRC),
+    [PS_BS] = ACTION_TAP_DANCE_TAP_HOLD(KC_PSCR, KC_BSLS),
 };
 
 /*
@@ -260,39 +250,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             tap_code16(tap_hold->tap);
             }
             break;
-        case TD(KM_CM):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(UP_SL):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(DN_RB):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(LF_LB):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(RT_BS):
+        case TD(KM_CO):
             action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
             state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
             if (!record->event.pressed && state != NULL && state->count && !state->finished) {
@@ -308,7 +266,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             tap_code16(tap_hold->tap);
             }
             break;
-        case TD(P8_UP):
+        case TD(N9_LB):
             action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
             state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
             if (!record->event.pressed && state != NULL && state->count && !state->finished) {
@@ -316,7 +274,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             tap_code16(tap_hold->tap);
             }
             break;
-        case TD(P5_DN):
+        case TD(N0_RB):
             action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
             state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
             if (!record->event.pressed && state != NULL && state->count && !state->finished) {
@@ -324,15 +282,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             tap_code16(tap_hold->tap);
             }
             break;
-        case TD(P4_LF):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(P6_RT):
+        case TD(PS_BS):
             action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
             state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
             if (!record->event.pressed && state != NULL && state->count && !state->finished) {
@@ -385,6 +335,12 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return 225;
         case TD(VU_NX):
             return 225;
+        case TD(PS_BS):
+            return 225;
+        case TD(N0_RB):
+            return 200;
+        case TD(N9_LB):
+            return 200;
         default:
             return TAPPING_TERM;
     }
