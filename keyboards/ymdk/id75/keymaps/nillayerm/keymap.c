@@ -186,120 +186,29 @@ tap_dance_action_t tap_dance_actions[] = {
     [SL_BS] = ACTION_TAP_DANCE_TAP_HOLD(KC_SLSH, KC_BSLS),
 };
 
+void handle_tap_dance(uint16_t keycode, keyrecord_t *record) {
+    tap_dance_action_t *action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
+    tap_dance_state_t *state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
+    if (!record->event.pressed && state && state->count && !state->finished) {
+        tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+        tap_code16(tap_hold->tap);
+    }
+}
+
+
 /*
  - special Tap Dance keys for tap-hold function
  - turn LED off when toggled back
  - customized macro keys
 */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    tap_dance_action_t *action;
-    tap_dance_state_t* state;
-
     switch (keycode) {
         // Tap Dance for tap-hold
-        case TD(MU_PL):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(VD_PR):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(VU_NX):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(BK_NL):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(PL_EQ):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(MN_SL):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(PD_PA):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(KM_CO):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(ET_EC):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(N9_LB):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(N0_RB):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
-        case TD(PS_EQ):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
-            break;
+        case TD(MU_PL): case TD(VD_PR): case TD(VU_NX): case TD(BK_NL):
+        case TD(PL_EQ): case TD(MN_SL): case TD(PD_PA): case TD(KM_CO):
+        case TD(ET_EC): case TD(N9_LB): case TD(N0_RB): case TD(PS_EQ):
         case TD(SL_BS):
-            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
-            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
-            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
-            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
-            tap_code16(tap_hold->tap);
-            }
+            handle_tap_dance(keycode, record);
             break;
 
         // Turn LEDs off to indicate current status
@@ -322,26 +231,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case QM_TGED:
             if (record->event.pressed) {
                 SEND_STRING(
-                    SS_DOWN(X_END)
+                    SS_DOWN(X_END)          // hold down 'end'
                 );
             }
             break;
         case QM_TGFW:
             if (record->event.pressed) {
                 SEND_STRING(
-                    SS_DOWN(X_W)
+                    SS_DOWN(X_W)            // hold down 'w'
                 );
             }
             break;
         case QM_CLST:
             if (record->event.pressed) {
-                tap_code(MS_BTN1);
-                SEND_STRING(SS_LCTL("w"));
+                tap_code(MS_BTN1);          // Left click
+                wait_ms(10);                // Delay 10 ms
+                SEND_STRING(SS_LCTL("w"));  // Send Ctrl+W
             }
             break;
         case QM_DRAG:
             if (record->event.pressed) {
-                register_code(MS_BTN1);
+                register_code(MS_BTN1);     // hold down left click
             }
             break;
     }
