@@ -31,6 +31,8 @@ enum layer_names {
 enum custom_macros {
     QM_TGFW = SAFE_RANGE, // hold down 'w'
     QM_TGED,              // hold down 'end'
+    QM_CLST,              // focus on current window with a left click then close tab
+    QM_DRAG,              // hold down 'left click'
 };
 
 // Tap Dance keycodes
@@ -113,10 +115,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* FN1 Layer */
     [_FN1] = LAYOUT_ortho_5x15(
         KC_F12,    KC_F1,      KC_F2,     KC_F3,    KC_F4,    KC_F5,      _______,    _______,    _______,  KC_F6,    KC_F7,    KC_F8,    KC_F9,      KC_F10,   KC_F11,
-        _______,   C(KC_Q),    C(KC_W),   C(KC_E),  C(KC_R),  C(KC_T),    _______,    _______,    _______,  _______,  _______,  _______,  _______,    _______,  RM_TOGG,
+        _______,   C(KC_Q),    QM_CLST,   C(KC_E),  C(KC_R),  C(KC_T),    _______,    _______,    _______,  _______,  _______,  _______,  _______,    _______,  RM_TOGG,
         KC_CAPS,   C(KC_A),    C(KC_S),   C(KC_D),  C(KC_F),  MO(_SYST),  _______,    _______,    _______,  _______,  _______,  _______,  TG(_LOCK),  _______,  XXXXXXX,
         XXXXXXX,   C(S(KC_T)), C(KC_Z),   C(KC_X),  C(KC_C),  C(KC_V),    TD(VU_NX),  _______,    _______,  _______,  _______,  _______,  _______,    RM_VALU,  _______,
-        _______,   _______,    _______,   _______,  _______,  KC_TRNS,    TD(VD_PR),  TD(MU_PL),  _______,  _______,  _______,  KC_RCTL,  RM_PREV,    RM_VALD,  RM_NEXT
+        _______,   _______,    _______,   _______,  QM_DRAG,  KC_TRNS,    TD(VD_PR),  TD(MU_PL),  _______,  _______,  _______,  KC_RCTL,  RM_PREV,    RM_VALD,  RM_NEXT
     ),
 
     /* FN2 Layer */
@@ -125,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, QM_TGFW, QM_TGED, _______, _______, _______,    _______,    _______,  _______,  _______,  _______,  _______,  _______,    _______,
         KC_CAPS, _______, _______, _______, _______, _______, _______,    _______,    _______,  _______,  _______,  _______,  _______,  _______,    XXXXXXX,
         XXXXXXX, _______, _______, QK_LOCK, _______, _______, TD(VU_NX),  _______,    _______,  _______,  _______,  _______,  _______,  TD(VU_NX),  _______,
-        _______, _______, _______, KC_TRNS, _______, _______, TD(VD_PR),  TD(MU_PL),  _______,  _______,  _______,  _______,  _______,  TD(VD_PR),  TD(MU_PL)
+        _______, _______, KC_HOME, KC_TRNS, KC_END,  _______, TD(VD_PR),  TD(MU_PL),  _______,  _______,  _______,  _______,  _______,  TD(VD_PR),  TD(MU_PL)
     ),
 
     /* System Layer */
@@ -329,6 +331,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(
                     SS_DOWN(X_W)
                 );
+            }
+            break;
+        case QM_CLST:
+            if (record->event.pressed) {
+                tap_code(MS_BTN1);
+                SEND_STRING(SS_LCTL("w"));
+            }
+            break;
+        case QM_DRAG:
+            if (record->event.pressed) {
+                register_code(MS_BTN1);
             }
             break;
     }
