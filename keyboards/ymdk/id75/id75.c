@@ -16,20 +16,3 @@
 
 #include "quantum.h"
 
-#ifdef RGB_MATRIX_ENABLE
-bool rgb_matrix_indicators_kb(void) {
-    if (!rgb_matrix_indicators_user()) {
-        return false;
-    }
-
-    if (host_keyboard_led_state().caps_lock) { // dedicated per-key light zone for Capslock
-        // front side of the underglow
-        rgb_matrix_set_color(2, 6, 255, 65);
-        rgb_matrix_set_color(3, 6, 255, 65);
-        rgb_matrix_set_color(4, 6, 255, 65);
-    }
-    return true;
-}
-
-#endif
-
