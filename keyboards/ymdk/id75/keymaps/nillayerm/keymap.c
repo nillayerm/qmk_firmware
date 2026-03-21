@@ -32,7 +32,6 @@ enum custom_macros {
     QM_TGFW = SAFE_RANGE, // hold down 'w'
     QM_TGED,              // hold down 'end'
     QM_CLST,              // focus on current window with a left click then close tab
-    QM_DRAG,              // hold down 'left click'
 };
 
 // Tap Dance keycodes
@@ -117,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,   C(KC_Q),    QM_CLST,   C(KC_E),  C(KC_R),  C(KC_T),    _______,     _______,     _______,  _______,  _______,  _______,  _______,    _______,  RM_TOGG,
         KC_CAPS,   C(KC_A),    C(KC_S),   C(KC_D),  C(KC_F),  MO(_SYST),  _______,     _______,     _______,  _______,  _______,  _______,  TG(_LOCK),  _______,  XXXXXXX,
         XXXXXXX,   C(S(KC_T)), C(KC_Z),   C(KC_X),  C(KC_C),  C(KC_V),    TD(VLU_NXT), _______,     _______,  _______,  _______,  _______,  _______,    RM_VALU,  _______,
-        _______,   _______,    _______,   _______,  QM_DRAG,  KC_TRNS,    TD(VLD_PRV), TD(MUT_PLY), _______,  _______,  _______,  KC_RCTL,  RM_PREV,    RM_VALD,  RM_NEXT
+        _______,   _______,    _______,   _______,  _______,  KC_TRNS,    TD(VLD_PRV), TD(MUT_PLY), _______,  _______,  _______,  KC_RCTL,  RM_PREV,    RM_VALD,  RM_NEXT
     ),
 
     /* FN2 Layer */
@@ -125,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, _______, _______, _______,     _______,     _______,  _______,  _______,  _______,  _______,  _______,     _______,
         _______, _______, QM_TGFW, QM_TGED, _______, _______, _______,     _______,     _______,  _______,  _______,  _______,  _______,  _______,     _______,
         KC_CAPS, _______, _______, _______, _______, _______, _______,     _______,     _______,  _______,  _______,  _______,  _______,  _______,     XXXXXXX,
-        XXXXXXX, _______, _______, QK_LOCK, _______, _______, TD(VLU_NXT), _______,     _______,  _______,  _______,  _______,  _______,  TD(VLU_NXT), _______,
+        XXXXXXX, _______, _______, QK_LOCK, MS_BTN1, _______, TD(VLU_NXT), _______,     _______,  _______,  _______,  _______,  _______,  TD(VLU_NXT), _______,
         _______, _______, KC_HOME, KC_TRNS, KC_END,  _______, TD(VLD_PRV), TD(MUT_PLY), _______,  _______,  _______,  _______,  _______,  TD(VLD_PRV), TD(MUT_PLY)
     ),
 
@@ -261,11 +260,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(MS_BTN1);          // Left click
                 wait_ms(10);                // Delay 10 ms
                 SEND_STRING(SS_LCTL("w"));  // Send Ctrl+W
-            }
-            break;
-        case QM_DRAG:
-            if (record->event.pressed) {
-                register_code(MS_BTN1);     // hold down left click
             }
             break;
     }
