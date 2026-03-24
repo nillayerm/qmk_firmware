@@ -15,9 +15,17 @@
  */
 
 #include QMK_KEYBOARD_H
+#include <math.h>
+
 /* Prototypes for tap-dance helpers used in this file */
 #include "quantum/keymap_introspection.h"
 #include "quantum/process_keycode/process_tap_dance.h"
+
+#define STAGE_MIN_MS    600000UL                // 10분
+#define STAGES          4
+#define FINAL_THRESHOLD_MS  (STAGE_MIN_MS * STAGES) // 40 minutes
+#define WAVE_PERIOD_MS  1600.0f                     // 파도 주기: 1.6초
+#define PI              3.14159265f
 
 enum layer_names {
     _BASE,
@@ -149,7 +157,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // --- LED index groups ---
 static const uint8_t caps_leds[] = {2, 3, 4};
-static const uint8_t lock_leds[] = {0, 1, 5, 6};
+static const uint8_t lock_leds[] = {0, 1, 5};
 static const uint8_t num_led     = 68;
 
 // --- Helper to set a group of LEDs ---
@@ -159,6 +167,29 @@ static void set_led_group(const uint8_t *leds, uint8_t count, uint8_t r, uint8_t
     }
 }
 
+static float ease_out(float x) {
+    return 1.0f - (1.0f - x) * (1.0f - x);
+}
+
+static const uint8_t groups[STAGES][3] = {
+    {6,  7,  8},
+    {21, 22, 23},
+    {36, 37, 38},
+    {51, 52, 53}
+};
+
+// 단계별 밝기 스케일 (과거 단계는 더 약하게)
+static const float stage_scale[STAGES] = {0.55f, 0.70f, 0.85f, 0.95f};
+
+// 단계별 고정 색상 (채도 낮춘 값)
+// 1단: 초록, 2단: 노랑, 3단: 주황, 4단: 빨강
+static const uint8_t stage_colors[STAGES][3] = {
+    {0,200,20},   // 1단계: 초록
+    {160,140,0},   // 2단계: 노랑
+    {220,50,10},   // 3단계: 주황
+    {240,30,8}    // 4단계: 빨강
+};
+
 bool rgb_matrix_indicators_user(void) {
     static bool prev_caps = false;
     static bool prev_lock = false;
@@ -166,6 +197,74 @@ bool rgb_matrix_indicators_user(void) {
     bool caps = host_keyboard_led_state().caps_lock;
     bool num  = host_keyboard_led_state().num_lock;
     bool lock = layer_state_is(_LOCK);
+
+    uint32_t now = timer_read32();
+    uint32_t elapsed = now; // ms since boot (wraps eventually)
+    // 계산된 단계: 0..3 (10분 단위)
+    int calc_stage = (int)(elapsed / STAGE_MIN_MS);
+    if (calc_stage < 0) calc_stage = 0;
+    if (calc_stage > (STAGES - 1)) calc_stage = STAGES - 1;
+
+    // final_mode: 40분(=4 * STAGE_MIN_MS) 이상이면 최종 모드 유지
+    static bool final_mode = false;
+    if (!final_mode && elapsed >= FINAL_THRESHOLD_MS) {
+        final_mode = true;
+    }
+
+    const float min_brightness = 0.12f;
+    const float amp = 0.55f;
+    const float base_phase = 2.0f * PI * ((float)now / WAVE_PERIOD_MS);
+
+    // active_stage는 calc_stage (0..3)
+    int active_stage = calc_stage;
+
+    // --- 동작 분기 ---
+    if (!final_mode) {
+        // final_mode가 아니면 0..3 단계까지 가로 파도(역방향: 8->7->6)
+        // 활성화된 단계 수는 active_stage (예: active_stage==1이면 s=0..1 활성)
+        uint8_t active_r = stage_colors[active_stage][0];
+        uint8_t active_g = stage_colors[active_stage][1];
+        uint8_t active_b = stage_colors[active_stage][2];
+
+        for (int s = 0; s <= active_stage && s < STAGES; s++) {
+            float base = stage_scale[s];
+            for (int i = 0; i < 3; i++) {
+                // groups[s][0]=6, [1]=7, [2]=8
+                // 역방향: 높은 인덱스(8번)가 먼저 밝아지도록 +offset 적용
+                float index_offset = (float)i * 1.0f;
+                float phase = base_phase + index_offset;
+                float wave = (sinf(phase) + 1.0f) * 0.5f; // 0..1
+                float brightness = min_brightness + (amp * wave * base);
+
+                uint8_t r = (uint8_t)((float)active_r * brightness);
+                uint8_t g = (uint8_t)((float)active_g * brightness);
+                uint8_t b = (uint8_t)((float)active_b * brightness);
+                rgb_matrix_set_color(groups[s][i], r, g, b);
+            }
+        }
+        // 미래 단계(활성되지 않은 단계)는 건드리지 않아 기본 효과 유지
+    } else {
+        // --- final_mode: 40분 이후 ---
+        // 모든 제어 LED는 4단계 색상(장작불) 사용, 세로 파도(아래->위) 계속 반복
+        for (int s = 0; s < STAGES; s++) {
+            float base = stage_scale[s];
+            for (int i = 0; i < 3; i++) {
+                // 세로 파도: 아래 단계(s=0)가 먼저 밝아지고 위로 올라가도록
+                float stage_offset = (float)s * 1.4f; // 아래->위 이동감
+                float col_offset = (float)i * 0.25f;
+                float phase = base_phase - stage_offset - col_offset;
+                float wave = (sinf(phase) + 1.0f) * 0.5f;
+                float brightness = min_brightness + (amp * wave * base);
+
+                uint8_t r = (uint8_t)((float)stage_colors[3][0] * brightness);
+                uint8_t g = (uint8_t)((float)stage_colors[3][1] * brightness);
+                uint8_t b = (uint8_t)((float)stage_colors[3][2] * brightness);
+                rgb_matrix_set_color(groups[s][i], r, g, b);
+            }
+        }
+        // 이 상태는 final_mode가 true인 한 계속 유지됩니다.
+        // 전원 재투입(리셋) 시 final_mode는 초기화되어 다시 0단계부터 시작합니다.
+    }
 
     // --- Caps Lock ---
     // ON → always enforce solid color
@@ -178,9 +277,40 @@ bool rgb_matrix_indicators_user(void) {
     prev_caps = caps;
 
     // --- Num Lock ---
-    // Always enforce binary state every cycle
+    // Always indicates Num Lock state with customized breathing effect every cycle
     if (num) {
-        rgb_matrix_set_color(num_led, 255, 128, 0); // solid orange ON
+        uint32_t t = timer_read32() % 10000; // 10초 주기
+        uint8_t r, g, b;
+
+        if (t < 4000) {
+            // 들숨: 청록 → 주황
+            if (t < 2800) {
+                // 청록 유지 (2.8초)
+                r = 0; g = 180; b = 150;
+            } else {
+                // 전환 (1.2초)
+                float progress = (float)(t - 2800) / 1200.0f;
+                float blend = ease_out(progress);
+                r = (uint8_t)(0   * (1.0f - blend) + 200 * blend);
+                g = (uint8_t)(180 * (1.0f - blend) + 100 * blend);
+                b = (uint8_t)(150 * (1.0f - blend) + 0   * blend);
+            }
+        } else {
+            // 날숨: 주황 → 청록
+            if (t < 8800) {
+                // 주황 유지 (4.8초)
+                r = 200; g = 100; b = 0;
+            } else {
+                // 전환 (1.2초)
+                float progress = (float)(t - 8800) / 1200.0f;
+                float blend = ease_out(progress);
+                r = (uint8_t)(200 * (1.0f - blend) + 0   * blend);
+                g = (uint8_t)(100 * (1.0f - blend) + 180 * blend);
+                b = (uint8_t)(0   * (1.0f - blend) + 150 * blend);
+            }
+        }
+
+        rgb_matrix_set_color(68, r, g, b);
     } else {
         rgb_matrix_set_color(num_led, 0, 0, 0);     // forced black OFF
     }
@@ -189,9 +319,9 @@ bool rgb_matrix_indicators_user(void) {
     // ON → always enforce solid color
     // OFF → only update when state changes, release back to effect
     if (lock) {
-        set_led_group(lock_leds, 4, 255, 30, 0);   // solid red ON
+        set_led_group(lock_leds, 3, 255, 30, 0);   // solid red ON
     } else if (lock != prev_lock) {
-        set_led_group(lock_leds, 4, 0, 0, 0);      // release OFF
+        set_led_group(lock_leds, 3, 0, 0, 0);      // release OFF
     }
     prev_lock = lock;
 
