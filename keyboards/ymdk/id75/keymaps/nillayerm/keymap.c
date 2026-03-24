@@ -235,8 +235,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // Tap Dance for tap-hold
         case TD(MUT_PLY): case TD(VLD_PRV): case TD(VLU_NXT): case TD(BKS_NLK):
         case TD(PLS_AST): case TD(MNS_SLS): case TD(KCM_CMM): case TD(ENT_ESC):
-        case TD(KC9_LBK): case TD(KC0_RBK): case TD(PRT_EQL):
-        case TD(SLS_BSL):
+        case TD(KC9_LBK): case TD(KC0_RBK): case TD(PRT_EQL): case TD(SLS_BSL):
             handle_tap_dance(keycode, record);
             break;
 
