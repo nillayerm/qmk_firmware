@@ -25,3 +25,6 @@
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_PIXEL_RAIN /* Sets the default mode, if none has been set */
 
 /* #define RGB_MATRIX_DEFAULT_SPD 127 // Sets the default animation speed, if none has been set */
+
+#define RGBLIGHT_SLEEP
+#define SUSPEND_ACTION
