@@ -21,11 +21,7 @@
 #include "quantum/keymap_introspection.h"
 #include "quantum/process_keycode/process_tap_dance.h"
 
-// --- 절전 복귀 시 시간 초기화를 위한 기준 시각 ---
-static uint32_t base_time = 0;
-static bool final_mode = false;
-
-#define STAGE_MIN_MS    6000UL                // 10분
+#define STAGE_MIN_MS    600000UL                // 10분
 #define STAGES          4
 #define FINAL_THRESHOLD_MS  (STAGE_MIN_MS * STAGES) // 40 minutes
 #define WAVE_PERIOD_MS  1600.0f                     // 파도 주기: 1.6초
@@ -194,16 +190,6 @@ static const uint8_t stage_colors[STAGES][3] = {
     {240,30,0}    // 4단계: 빨강
 };
 
-void suspend_power_down_user(void) {
-    // 절전 진입 시 특별 처리 없음
-}
-
-void suspend_wakeup_init_user(void) {
-    // 절전에서 깨어날 때 기준 시각을 현재로 초기화
-    base_time = timer_read32();
-    final_mode = false; // 절전 복귀 시 final 모드 리셋
-}
-
 bool rgb_matrix_indicators_user(void) {
     static bool prev_caps = false;
     static bool prev_lock = false;
@@ -213,8 +199,8 @@ bool rgb_matrix_indicators_user(void) {
     bool lock = layer_state_is(_LOCK);
 
     uint32_t now = timer_read32();
-    // 이전: uint32_t elapsed = now;
-    uint32_t elapsed = now - base_time; // 절전 복귀 시점부터 경과 시간 계산
+    uint32_t elapsed = now;
+
     // 계산된 단계: 0..3 (10분 단위)
     int calc_stage = (int)(elapsed / STAGE_MIN_MS);
     if (calc_stage < 0) calc_stage = 0;
@@ -342,8 +328,6 @@ bool rgb_matrix_indicators_user(void) {
 
     return false; // allow other effects for non-indicator LEDs
 }
-
-
 
 // Key assignment for Tap Dance keycodes
 tap_dance_action_t tap_dance_actions[] = {
