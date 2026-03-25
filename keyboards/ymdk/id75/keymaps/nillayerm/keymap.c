@@ -21,6 +21,10 @@
 #include "quantum/keymap_introspection.h"
 #include "quantum/process_keycode/process_tap_dance.h"
 
+// 기존 static 변수를 함수 밖으로 빼서 전역으로 선언합니다.
+static bool final_mode = false;
+static uint32_t offset_time = 0; // 절전 모드 해제 시 시점 보정을 위한 오프셋
+
 #define STAGE_MIN_MS    600000UL                // 10분
 #define STAGES          4
 #define FINAL_THRESHOLD_MS  (STAGE_MIN_MS * STAGES) // 40 minutes
@@ -190,6 +194,11 @@ static const uint8_t stage_colors[STAGES][3] = {
     {240,30,0}    // 4단계: 빨강
 };
 
+void suspend_wakeup_init_user(void) {
+    final_mode = false;          // 40분 경과 상태 초기화
+    offset_time = timer_read32(); // 현재 시간을 오프셋으로 기록하여 0분부터 계산하게 함
+}
+
 bool rgb_matrix_indicators_user(void) {
     static bool prev_caps = false;
     static bool prev_lock = false;
@@ -199,7 +208,8 @@ bool rgb_matrix_indicators_user(void) {
     bool lock = layer_state_is(_LOCK);
 
     uint32_t now = timer_read32();
-    uint32_t elapsed = now;
+    // 전체 가동 시간이 아니라, 마지막 초기화(절전 해제) 시점부터의 경과 시간을 계산
+    uint32_t elapsed = now - offset_time;
 
     // 계산된 단계: 0..3 (10분 단위)
     int calc_stage = (int)(elapsed / STAGE_MIN_MS);
@@ -207,7 +217,7 @@ bool rgb_matrix_indicators_user(void) {
     if (calc_stage > (STAGES - 1)) calc_stage = STAGES - 1;
 
     // final_mode: 40분(=4 * STAGE_MIN_MS) 이상이면 최종 모드 유지
-    static bool final_mode = false;
+    //static bool final_mode = false;
     if (!final_mode && elapsed >= FINAL_THRESHOLD_MS) {
         final_mode = true;
     }
