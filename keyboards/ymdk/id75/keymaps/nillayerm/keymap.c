@@ -44,6 +44,7 @@ enum custom_macros {
     QM_TGFW = SAFE_RANGE, // hold down 'w'
     QM_TGED,              // hold down 'end'
     QM_CLST,              // focus on current window with a left click then close tab
+    QM_TGLL,              // hold down 'l' after tapping it twice
 };
 
 // Tap Dance keycodes
@@ -135,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_FN2] = LAYOUT_ortho_5x15(
         _______, _______, _______, _______, _______, _______, _______,     _______,     _______,  _______,  _______,  _______,  _______,  _______,     _______,
         _______, _______, QM_TGFW, QM_TGED, _______, _______, _______,     _______,     _______,  _______,  _______,  _______,  _______,  _______,     _______,
-        KC_CAPS, _______, _______, _______, _______, _______, _______,     _______,     _______,  _______,  _______,  _______,  _______,  _______,     XXXXXXX,
+        KC_CAPS, _______, _______, QM_TGLL, _______, _______, _______,     _______,     _______,  _______,  _______,  _______,  _______,  _______,     XXXXXXX,
         XXXXXXX, _______, _______, QK_LOCK, MS_BTN1, _______, TD(VLU_NXT), _______,     _______,  _______,  _______,  _______,  _______,  TD(VLU_NXT), _______,
         _______, _______, KC_HOME, KC_TRNS, KC_END,  _______, TD(VLD_PRV), TD(MUT_PLY), _______,  _______,  _______,  _______,  _______,  TD(VLD_PRV), TD(MUT_PLY)
     ),
@@ -217,7 +218,6 @@ bool rgb_matrix_indicators_user(void) {
     if (calc_stage > (STAGES - 1)) calc_stage = STAGES - 1;
 
     // final_mode: 40분(=4 * STAGE_MIN_MS) 이상이면 최종 모드 유지
-    //static bool final_mode = false;
     if (!final_mode && elapsed >= FINAL_THRESHOLD_MS) {
         final_mode = true;
     }
@@ -398,6 +398,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(MS_BTN1);          // Left click
                 wait_ms(10);                // Delay 10 ms
                 SEND_STRING(SS_LCTL("w"));  // Send Ctrl+W
+            }
+            break;
+        case QM_TGLL:
+            if (record->event.pressed) {
+                register_code(KC_L);     // Hold down l
+                wait_ms(10);
+                unregister_code(KC_L);   // release l
+                wait_ms(10);            // Delay 300 ms
+                register_code(KC_L);     // Hold down l
             }
             break;
     }
