@@ -43,6 +43,7 @@ enum layer_names {
 enum custom_macros {
     QM_TGFW = SAFE_RANGE, // hold down 'w'
     QM_TGED,              // hold down 'end'
+    QM_TGK2,              // hold down '2'
     QM_CLST,              // focus on current window with a left click, then close tab
     QM_TGLL,              // hold down 'l' after tapping it once
 };
@@ -145,7 +146,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* FN2 Layer */
     [_FN2] = LAYOUT_ortho_5x15(
-        KC_ESC,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,     _______,
+        KC_ESC,  _______, QM_TGK2, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,     _______,
         KC_GRV,  _______, QM_TGFW, QM_TGED, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,     _______,
         _______, _______, KC_PGUP, QM_TGLL, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,     XXXXXXX,
         XXXXXXX, KC_SLSH, KC_PGDN, QK_LOCK, MS_BTN1, _______, _______, _______, _______,  _______,  _______,  KC_M,     _______,  TD(VLU_NXT), _______,
@@ -396,6 +397,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(
                     SS_DOWN(X_W)            // hold down 'w'
                 );
+            }
+            break;
+        case QM_TGK2:
+            if (record->event.pressed) {
+                register_code(KC_2);     // Hold down '2'
             }
             break;
         case QM_CLST:
