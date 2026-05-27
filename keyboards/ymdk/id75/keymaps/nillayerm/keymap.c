@@ -42,8 +42,8 @@ enum layer_names {
  // customized macro keys
 enum custom_macros {
     QM_TGFW = SAFE_RANGE, // hold down 'w'
-    QM_TGED,              // hold down 'end'
-    QM_TGK2,              // hold down '2'
+    QM_TGWE,              // hold down 'w' and 'e'
+    QM_TGSC,              // hold down ';'
     QM_CLST,              // focus on current window with a left click, then close tab
     QM_TGLL,              // hold down 'l' after tapping it once
 };
@@ -122,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         QK_GESC, KC_1,        KC_2,    KC_3,              KC_4,    KC_5,     TD(BKS_NLK), TD(PLS_AST), TD(MNS_SLS), KC_6,    KC_7,    KC_8,        TD(KC9_LBK), TD(KC0_RBK), TD(PRT_EQL),
         KC_TAB,  KC_Q,        KC_W,    KC_E,              KC_R,    KC_T,     TD(NP7_HMN), KC_P8,       KC_P9,       KC_Y,    KC_U,    KC_I,        KC_O,        KC_P,        KC_BSPC,
         KC_LSFT, KC_A,        KC_S,    KC_D,              KC_F,    KC_G,     KC_P4,       KC_P5,       KC_P6,       KC_H,    KC_J,    KC_K,        KC_L,        KC_RSFT,     XXXXXXX,
-        XXXXXXX, TD(SLS_BSL), KC_Z,    KC_X,              KC_C,    KC_V,     TD(NP1_END), KC_P2,       KC_P3,       KC_B,    KC_N,    TD(KCM_CMM), KC_DOT,      KC_UP,       KC_ENT,
+        KC_CAPS, TD(SLS_BSL), KC_Z,    KC_X,              KC_C,    KC_V,     TD(NP1_END), KC_P2,       KC_P3,       KC_B,    KC_N,    TD(KCM_CMM), KC_DOT,      KC_UP,       KC_ENT,
         KC_LCTL, KC_LGUI,     KC_LALT, LT(_FN2, KC_SCLN), KC_SPC,  MO(_FN1), TD(ENT_ESC), KC_P0,       KC_PDOT,     KC_QUOT, KC_SPC,  KC_RALT,     KC_LEFT,     KC_DOWN,     KC_RGHT
     ),
 
@@ -141,13 +141,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,   C(KC_Q),    QM_CLST,   C(KC_E),  C(KC_R),  C(KC_T),    _______,     _______,     _______,  _______,  _______,  _______,   _______,  _______,  RM_TOGG,
         KC_CAPS,   C(KC_A),    C(KC_S),   C(KC_D),  C(KC_F),  MO(_SYST),  _______,     _______,     _______,  _______,  _______,  TG(_ARRK), _______,  _______,  XXXXXXX,
         XXXXXXX,   C(S(KC_T)), C(KC_Z),   C(KC_X),  C(KC_C),  C(KC_V),    KC_VOLU,     _______,     _______,  _______,  _______,  _______,   _______,  RM_VALU,  _______,
-        _______,   _______,    _______,   _______,  _______,  KC_TRNS,    KC_VOLD,     TD(MUT_PLY), _______,  _______,  _______,  KC_RCTL,   RM_PREV,  RM_VALD,  RM_NEXT
+        _______,   _______,    _______,   QM_TGSC,  _______,  KC_TRNS,    KC_VOLD,     TD(MUT_PLY), _______,  _______,  _______,  KC_RCTL,   RM_PREV,  RM_VALD,  RM_NEXT
     ),
 
     /* FN2 Layer */
     [_FN2] = LAYOUT_ortho_5x15(
-        KC_ESC,  _______, QM_TGK2, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,     _______,
-        KC_GRV,  _______, QM_TGFW, QM_TGED, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,     _______,
+        KC_ESC,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,     _______,
+        KC_GRV,  _______, QM_TGFW, QM_TGWE, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,     _______,
         _______, _______, KC_PGUP, QM_TGLL, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  _______,     XXXXXXX,
         XXXXXXX, KC_SLSH, KC_PGDN, QK_LOCK, MS_BTN1, _______, _______, _______, _______,  _______,  _______,  KC_M,     _______,  TD(VLU_NXT), _______,
         _______, _______, _______, KC_TRNS, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______,  TD(VLD_PRV), TD(MUT_PLY)
@@ -164,7 +164,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // --- LED index groups ---
-static const uint8_t caps_leds[] = {2, 3, 4};
+static const uint8_t caps_leds[] = {2, 3, 29};
 static const uint8_t arrk_leds[] = {0, 1, 5};
 static const uint8_t num_led     = 68;
 
@@ -210,6 +210,16 @@ bool rgb_matrix_indicators_user(void) {
     bool caps = host_keyboard_led_state().caps_lock;
     bool num  = host_keyboard_led_state().num_lock;
     bool arrk = layer_state_is(_ARRK);
+
+    // --- Caps Lock ---
+    // ON → always enforce solid color
+    // OFF → only update when state changes, release back to effect
+    if (caps) {
+        set_led_group(caps_leds, 3, 6, 255, 65);   // solid greenish ON
+    } else if (caps != prev_caps) {
+        set_led_group(caps_leds, 3, 0, 0, 0);      // release OFF
+    }
+    prev_caps = caps;
 
     uint32_t now = timer_read32();
     // 전체 가동 시간이 아니라, 마지막 초기화(절전 해제) 시점부터의 경과 시간을 계산
@@ -279,16 +289,6 @@ bool rgb_matrix_indicators_user(void) {
         // 이 상태는 final_mode가 true인 한 계속 유지됩니다.
         // 전원 재투입(리셋) 시 final_mode는 초기화되어 다시 0단계부터 시작합니다.
     }
-
-    // --- Caps Lock ---
-    // ON → always enforce solid color
-    // OFF → only update when state changes, release back to effect
-    if (caps) {
-        set_led_group(caps_leds, 3, 6, 255, 65);   // solid greenish ON
-    } else if (caps != prev_caps) {
-        set_led_group(caps_leds, 3, 0, 0, 0);      // release OFF
-    }
-    prev_caps = caps;
 
     // --- Num Lock ---
     // Always indicates Num Lock state with customized breathing effect every cycle
@@ -385,13 +385,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         // customized macros
-        case QM_TGED:
-            if (record->event.pressed) {
-                SEND_STRING(
-                    SS_DOWN(X_END)          // hold down 'end'
-                );
-            }
-            break;
         case QM_TGFW:
             if (record->event.pressed) {
                 SEND_STRING(
@@ -399,9 +392,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 );
             }
             break;
-        case QM_TGK2:
+        case QM_TGWE:
             if (record->event.pressed) {
-                register_code(KC_2);     // Hold down '2'
+                register_code(KC_W);     // Hold down 'w'
+                register_code(KC_E);     // Hold down 'e'
+            }
+            break;
+        case QM_TGSC:
+            if (record->event.pressed) {
+                register_code(KC_SCLN);     // Hold down ';'
             }
             break;
         case QM_CLST:
