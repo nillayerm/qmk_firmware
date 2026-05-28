@@ -164,7 +164,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // --- LED index groups ---
-static const uint8_t caps_leds[] = {2, 3, 29};
+static const uint8_t caps_leds[] = {2, 4, 29};
 static const uint8_t arrk_leds[] = {0, 1, 5};
 static const uint8_t num_led     = 68;
 
