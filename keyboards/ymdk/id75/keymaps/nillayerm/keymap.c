@@ -439,7 +439,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case TD(KC9_LBK):
             return 195;
         case TD(KCM_CMM):
-            return 125;
+            return 130;
         default:
             return TAPPING_TERM;
     }
