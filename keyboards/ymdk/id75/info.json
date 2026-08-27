@@ -12,7 +12,7 @@
         "rgb_matrix": true
     },
     "dynamic_keymap": {
-    "layer_count": 5
+    "layer_count": 4
     },
     "rgb_matrix": {
         "animations": {
@@ -159,7 +159,7 @@
         "device_version": "0.0.1",
         "pid": "0x0075",
         "vid": "0x594D",
-        "suspend_wakeup_delay": 400
+        "suspend_wakeup_delay": 450
     },
     "community_layouts": ["ortho_5x15"],
     "layouts": {

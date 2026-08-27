@@ -1,6 +1,5 @@
 # Build Options
-
-STARTUP_NUMLOCK_ON = yes	# Boot up with Num Lock on
+#STARTUP_NUMLOCK_ON = yes	# Boot up with Num Lock on
 VIA_ENABLE = yes			# Enable VIA
 KEY_LOCK_ENABLE = yes		# Enable KC_LOCK support (QK_LOCK)
 KEY_OVERRIDE_ENABLE = yes
