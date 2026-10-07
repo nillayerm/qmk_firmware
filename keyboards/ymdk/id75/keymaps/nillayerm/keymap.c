@@ -39,7 +39,8 @@ enum custom_macros {
 
 // Tap Dance keycodes
 enum td_keycodes {
-    DOT_SLS, // 'm' and 'comma'
+    KC9_LBR,
+    KC0_RBR,
 };
 
 // various actions for Tap Dance
@@ -83,31 +84,33 @@ void tap_dance_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
         .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}),               \
     }
 
-const key_override_t backspace_key_override1 = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_QUOT);
-const key_override_t backspace_key_override2 = ko_make_basic(MOD_MASK_CTRL, KC_BSPC, KC_DQT);
+const key_override_t backspace_key_override1 = ko_make_basic(MOD_MASK_CTRL, KC_VOLU, KC_MUTE);
+const key_override_t backspace_key_override2 = ko_make_basic(MOD_MASK_CTRL, KC_VOLD, KC_MPLY);
+const key_override_t backspace_key_override3 = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_ENT);
 
 
 // This globally defines all key overrides to be used
 const key_override_t *key_overrides[] = {
     &backspace_key_override1,
     &backspace_key_override2,
+    &backspace_key_override3,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* Base Layer (Default Layer) */
     [_BASE] = LAYOUT_ortho_5x15(
-        QK_GESC, KC_1,    KC_2,    KC_3,              KC_4,   KC_5,     KC_6,   KC_7,   KC_8,    KC_9,    KC_0,        KC_MINS, KC_EQL,  KC_8,    KC_9,
-        KC_TAB,  KC_Q,    KC_W,    KC_E,              KC_R,   KC_T,     KC_Y,   KC_U,   KC_I,    KC_O,    KC_P,        KC_4,    KC_5,    KC_6,    KC_7,
-        KC_LSFT, KC_A,    KC_S,    KC_D,              KC_F,   KC_G,     KC_H,   KC_J,   KC_K,    KC_L,    KC_RSFT,     KC_1,    KC_UP,   KC_2,    KC_3,
-        KC_BSPC, KC_F5,   KC_Z,    KC_X,              KC_C,   KC_V,     KC_B,   KC_N,   KC_M,    KC_DOT,  TD(DOT_SLS), KC_LEFT, KC_DOWN, KC_RGHT, KC_HOME,
-        KC_LCTL, KC_LGUI, KC_LALT, LT(_FN2, KC_SCLN), KC_SPC, MO(_FN1), KC_ENT, KC_SPC, KC_RALT, KC_LBRC, KC_RBRC,     KC_0,    KC_PGUP, KC_PGDN, KC_END
+        QK_GESC, KC_1,    KC_2,    KC_3,              KC_4,   KC_5,     KC_6,   KC_7,   KC_8,    KC_9,    KC_0,        KC_MINS, KC_EQL,  KC_PGUP,    KC_VOLU,
+        KC_TAB,  KC_Q,    KC_W,    KC_E,              KC_R,   KC_T,     KC_Y,   KC_U,   KC_I,    KC_O,    KC_P,        KC_BSPC,    KC_UP,    KC_PGDN,    KC_VOLD,
+        KC_LSFT, KC_A,    KC_S,    KC_D,              KC_F,   KC_G,     KC_H,   KC_J,   KC_K,    KC_L,    KC_RSFT, KC_LEFT,    KC_DOWN,   KC_RGHT,    KC_9,
+        KC_QUOT, KC_BSPC, KC_Z,    KC_X,              KC_C,   KC_V,     KC_B,   KC_N,   KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_6, KC_7, KC_8,
+        KC_LCTL, KC_LGUI, KC_LALT, LT(_FN2, KC_SCLN), KC_SPC, MO(_FN1), KC_ENT, KC_SPC, KC_RALT, KC_0, KC_1,     KC_2,    KC_3, KC_4, KC_5
     ),
 
     /* FN1 Layer */
     [_FN1] = LAYOUT_ortho_5x15(
-        RM_TOGG, KC_F1,   KC_F2,   KC_F3,   KC_F4,   C(S(KC_T)), KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,   _______,  G(KC_PSCR),
-        _______, C(KC_Q), QM_CLST, C(KC_E), C(KC_R), C(KC_T),    _______, _______, _______, _______, _______, _______, _______, _______,  _______,
+        RM_TOGG, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,      KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,   _______,  G(KC_PSCR),
+        _______, C(KC_Q), QM_CLST, C(KC_E), C(KC_R), C(S(KC_T)), C(KC_T), _______, _______, _______, _______, _______, _______, _______,  _______,
         KC_CAPS, C(KC_A), C(KC_S), C(KC_D), C(KC_F), MO(_SYST),  _______, _______, _______, _______, _______, _______, RM_VALU, _______,  _______,
         _______, _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V),    KC_VOLU, KC_MPLY, KC_MUTE, _______, _______, RM_PREV, RM_VALD, RM_NEXT,  KC_INS,
         _______, _______, _______, QM_TGSC, KC_BSLS, KC_TRNS,    KC_VOLD, _______, KC_RCTL, _______, _______, _______, _______, _______,  KC_DEL
@@ -133,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // --- LED index groups ---
-static const uint8_t caps_leds[] = {2, 4, 44};
+static const uint8_t caps_leds[] = {3, 4, 5, 44};
 
 // --- Helper to set a group of LEDs ---
 static void set_led_group(const uint8_t *leds, uint8_t count, uint8_t r, uint8_t g, uint8_t b) {
@@ -151,9 +154,9 @@ bool rgb_matrix_indicators_user(void) {
     // ON → always enforce solid color
     // OFF → only update when state changes, release back to effect
     if (caps) {
-        set_led_group(caps_leds, 3, 6, 255, 65);   // solid greenish ON
+        set_led_group(caps_leds, 4, 6, 255, 65);   // solid greenish ON
     } else if (caps != prev_caps) {
-        set_led_group(caps_leds, 3, 0, 0, 0);      // release OFF
+        set_led_group(caps_leds, 4, 0, 0, 0);      // release OFF
     }
     prev_caps = caps;
 
@@ -162,7 +165,8 @@ bool rgb_matrix_indicators_user(void) {
 
 // Key assignment for Tap Dance keycodes
 tap_dance_action_t tap_dance_actions[] = {
-    [DOT_SLS] = ACTION_TAP_DANCE_TAP_HOLD(KC_DOT, KC_SLSH),   
+    [KC9_LBR] = ACTION_TAP_DANCE_TAP_HOLD(KC_9, KC_LBRC),
+    [KC0_RBR] = ACTION_TAP_DANCE_TAP_HOLD(KC_0, KC_RBRC),  
 };
 
 void handle_tap_dance(uint16_t keycode, keyrecord_t *record) {
@@ -182,7 +186,7 @@ void handle_tap_dance(uint16_t keycode, keyrecord_t *record) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         // Tap Dance for tap-hold
-            case TD(DOT_SLS):
+            case TD(KC9_LBR): case TD(KC0_RBR):
             handle_tap_dance(keycode, record);
             break;
 
@@ -228,7 +232,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // tapping term adjustment here
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case TD(DOT_SLS):
+        case TD(KC9_LBR):
+            return 160;
+        case TD(KC0_RBR):
             return 160;
         default:
             return TAPPING_TERM;
