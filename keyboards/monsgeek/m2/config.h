@@ -16,8 +16,10 @@
 
 #pragma once
 
-/* LED Indicators */
 #define LED_WIN_LOCK_PIN        C11
+#define LED_FACT_PIN            A15
+
+
 
 /* SPI Config for spi flash*/
 #define SPI_DRIVER SPIDQ

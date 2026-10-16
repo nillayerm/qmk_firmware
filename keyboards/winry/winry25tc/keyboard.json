@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Winry 25tc",
-    "manufacturer": "SpiderIsland",
+    "manufacturer": "DeBroglie",
+    "url": "https://github.com/pnetmon/winry25tf",
     "maintainer": "qmk",
     "usb": {
         "vid": "0xF1F1",
@@ -16,15 +17,27 @@
         "led_count": 40,
         "max_brightness": 150,
         "animations": {
-            "rainbow_swirl": true
-        }
+            "alternating": true,
+            "breathing": true,
+            "christmas": true,
+            "knight": true,
+            "rainbow_mood": true,
+            "rainbow_swirl": true,
+            "rgb_test": true,
+            "snake": true,
+            "static_gradient": true,
+            "twinkle": true     
+        },
+        "sleep": true
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "key_lock": true,
-        "mousekey": false,
-        "nkro": false,
+        "mousekey": true,
+        "nkro": true,
         "rgblight": true
     },
     "matrix_pins": {

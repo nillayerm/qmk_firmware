@@ -26,9 +26,30 @@
             "nkro": true
         }
     },
+    /* LED Indicators
+        Pin A15 is originally for CapsLock, it somehow switched its position with Num Lock.
+        1. So originally:
+            "indicators": {
+                "num_lock": "C10"
+                "caps_lock": "A15"
+            }
+
+        2. Then it internally changed to:
+            "indicators": {
+                num_lock": "A15"
+                "caps_lock": "C10"
+            }
+
+        3. Current status:
+            "indicators": {
+                "caps_lock": "C10"
+            }
+
+            Then Added Factory Layer indicator on Num Lock's position.
+    */
     "indicators": {
-        "caps_lock": "A15",
-        "num_lock": "C10"
+        "caps_lock": "C10"
+        // , "num_lock": "A15"
     },
     "matrix_pins": {
         "cols": ["C1", "C2", "C3", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "C4", "C5", "B0", "B1", "B2", "B10", "B11", "B12", "B13", "B14"],

@@ -134,6 +134,10 @@ void keyboard_pre_init_kb(void) {
     gpio_set_pin_output(LED_WIN_LOCK_PIN); // LED3 Win Lock
     gpio_write_pin_low(LED_WIN_LOCK_PIN);
 
+    gpio_set_pin_output(LED_FACT_PIN); //private function for indicator
+    gpio_write_pin_low(LED_FACT_PIN);
+
+
     keyboard_pre_init_user();
 }
 
