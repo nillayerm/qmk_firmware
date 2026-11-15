@@ -34,7 +34,7 @@ enum custom_macros {
     QM_TGWE,              // hold down 'w' and 'e'
     QM_TGSC,              // hold down ';'
     QM_CLST,              // focus on current window with a left click, then close tab
-    QM_TGLL,              // hold down 'left' after tapping it once
+    QM_TGRR,              // hold down 'right' after tapping it once
 };
 
 // Tap Dance keycodes
@@ -120,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_FN2] = LAYOUT_ortho_5x15(
         KC_ESC,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______, _______, _______,
         KC_GRV,  _______, QM_TGFW, QM_TGWE, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______, _______, _______,
-        KC_CAPS, _______, KC_PGUP, QM_TGLL, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______, _______, _______,
+        KC_CAPS, _______, KC_PGUP, QM_TGRR, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______, _______, _______,
         _______, _______, KC_PGDN, QK_LOCK, MS_BTN1, _______, _______, _______, _______,  _______,  _______,  _______,  _______, _______, _______,
         _______, _______, _______, KC_TRNS, _______, _______, _______, _______, _______,  _______,  _______,  _______,  _______, _______, _______
     ),
@@ -216,13 +216,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_LCTL("w"));  // Send Ctrl+W
             }
             break;
-        case QM_TGLL:
+        case QM_TGRR:
             if (record->event.pressed) {
-                register_code(KC_LEFT);     // Hold down l
+                register_code(KC_RGHT);     // Hold down l
                 wait_ms(10);
-                unregister_code(KC_LEFT);   // release l
+                unregister_code(KC_RGHT);   // release l
                 wait_ms(10);            // Delay 300 ms
-                register_code(KC_LEFT);     // Hold down l
+                register_code(KC_RGHT);     // Hold down l
             }
             break;
     }
